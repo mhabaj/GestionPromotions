@@ -1,13 +1,13 @@
 package com.promotion.bean;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class PromotionBean {
 	private String nomPromotion;
 	private int annee;
 	
-	private List<EtudiantBean> etudiants;
-	private List<MatiereBean> matieres;
+	private ArrayList<EtudiantBean> etudiants;
+	private ArrayList<MatiereBean> matieres;
 	
 	public PromotionBean() {
 		
@@ -29,19 +29,19 @@ public class PromotionBean {
 		this.annee = annee;
 	}
 
-	public List<EtudiantBean> getEtudiants() {
+	public ArrayList<EtudiantBean> getEtudiants() {
 		return etudiants;
 	}
 
-	public void setEtudiants(List<EtudiantBean> etudiants) {
+	public void setEtudiants(ArrayList<EtudiantBean> etudiants) {
 		this.etudiants = etudiants;
 	}
 
-	public List<MatiereBean> getMatieres() {
+	public ArrayList<MatiereBean> getMatieres() {
 		return matieres;
 	}
 
-	public void setMatieres(List<MatiereBean> matieres) {
+	public void setMatieres(ArrayList<MatiereBean> matieres) {
 		this.matieres = matieres;
 	}
 	

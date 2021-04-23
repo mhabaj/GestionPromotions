@@ -13,14 +13,14 @@ public class DaoEtudiant extends DaoGenerator {
 
 	public static void creerEtudiant(EtudiantBean etudiant) {
 		try (Connection con = DriverManager.getConnection(dbURL, dbLogin, dbPassword)) {
-        	String insertQuery = "INSERT INTO Etudiant (admin, email, mot_de_passe, nom, prenom, date_inscription, nomPromotion) VALUES (?, ?, ?, ?, ?, NOW(), ?)";
+        	String insertQuery = "INSERT INTO Etudiant (admin, email, mot_de_passe, nom, prenom, date_inscription, annee) VALUES (?, ?, ?, ?, ?, NOW(), ?)";
         	try(PreparedStatement preparedStatement = con.prepareStatement(insertQuery)){
         		preparedStatement.setString(2, etudiant.getEmail());
         		preparedStatement.setString(3, etudiant.getMotDePasse());
         		preparedStatement.setString(4, etudiant.getNom());
         		preparedStatement.setBoolean(1, etudiant.getAdmin());
         		preparedStatement.setString(5, etudiant.getPrenom());
-        		preparedStatement.setString(8, etudiant.getNomPromotion());
+        		preparedStatement.setInt(7, etudiant.getAnnee());
         		preparedStatement.executeUpdate();
         	}
     	} catch(Exception e) {
@@ -61,7 +61,7 @@ public class DaoEtudiant extends DaoGenerator {
                     	etudiantRecherche.setDateDInscription(new Timestamp(resultSet.getDate(7).getTime()));
                     	etudiantRecherche.setAdmin(resultSet.getBoolean(2));
                     	etudiantRecherche.setPrenom(resultSet.getString(6));
-                    	etudiantRecherche.setNomPromotion(resultSet.getString(9));
+                    	etudiantRecherche.setAnnee(resultSet.getInt(8));
                     }
                 }
         	}
@@ -120,13 +120,14 @@ public class DaoEtudiant extends DaoGenerator {
                 try ( ResultSet resultSet = preparedStatement.executeQuery() ) {
                     while ( resultSet.next() ) {
                     	EtudiantBean etudiantNonAdmin = new EtudiantBean();
+                    	etudiantNonAdmin.setId(resultSet.getInt(1));
                     	etudiantNonAdmin.setEmail(resultSet.getString(3));
                     	etudiantNonAdmin.setMotDePasse(resultSet.getString(4));
                     	etudiantNonAdmin.setNom(resultSet.getString(5));
                     	etudiantNonAdmin.setDateDInscription(new Timestamp(resultSet.getDate(7).getTime()));
                     	etudiantNonAdmin.setAdmin(resultSet.getBoolean(2));
                     	etudiantNonAdmin.setPrenom(resultSet.getString(6));
-                    	etudiantNonAdmin.setNomPromotion(resultSet.getString(9));
+                    	etudiantNonAdmin.setAnnee(resultSet.getInt(8));
                         listeDesEtudiantsNonAdmins.add(etudiantNonAdmin);
                     }
                 }
@@ -139,15 +140,14 @@ public class DaoEtudiant extends DaoGenerator {
 
 	public static void deleteEtudiant(int etudiantId) {
 		try(Connection con = DriverManager.getConnection(dbURL, dbLogin, dbPassword)){
-			String deleteQuery = "DELETE FROM Etudiant WHERE id=?";
+			String deleteQuery = "DELETE FROM Etudiant WHERE id=?;";
 			try(PreparedStatement preparedStatement = con.prepareStatement(deleteQuery)) {
 				preparedStatement.setInt(1, etudiantId);
 				preparedStatement.executeUpdate();
 			}
 		}catch(Exception e) {
 			throw new RuntimeException(e);
-		}
-		
+		}	
 	}
 
 }

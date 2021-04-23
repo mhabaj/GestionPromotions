@@ -31,7 +31,7 @@ public class DeleteEtudiant extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		DaoEtudiant.deleteEtudiant(Integer.parseInt(request.getParameter("etudiantId")));
+		DaoEtudiant.deleteEtudiant(Integer.parseInt(request.getParameter("etudiantId")));	
 		HttpSession session = request.getSession();
 		session.setAttribute("etudiants", DaoEtudiant.getAllNonAdminEtudiants());
 		this.getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp").forward(request, response);

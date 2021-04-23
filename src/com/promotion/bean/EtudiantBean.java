@@ -1,7 +1,7 @@
 package com.promotion.bean;
 
 import java.sql.Timestamp;
-import java.util.List;
+import java.util.ArrayList;
 /**
  * @brief classe Bean des étudiants qui recevront les données de la base de données.
  * @author Sean Anica & Alhabaj Mahmod & Rondeau Juliette
@@ -12,12 +12,13 @@ public class EtudiantBean {
 	private long id;
 	private String nom;
 	private String prenom;
+	private int annee;
 	private String email;
 	private String motDePasse;
 	private Boolean admin;
 	private Timestamp dateDInscription;
 	
-	private List<NoteBean> notes;
+	private ArrayList<NoteBean> notes;
 	private String nomPromotion;
 	
 	public EtudiantBean() {
@@ -41,6 +42,12 @@ public class EtudiantBean {
 	}
 	public void setPrenom(String prenom) {
 		this.prenom = prenom;
+	}
+	public int getAnnee() {
+		return annee;
+	}
+	public void setAnnee(int annee) {
+		this.annee = annee;
 	}
 	public String getEmail() {
 		return email;
@@ -67,12 +74,12 @@ public class EtudiantBean {
 		this.dateDInscription = dateDInscription;
 	}
 
-	public List<NoteBean> getNotes() {
-		return notes;
+	public ArrayList<NoteBean> getNotes() {
+		return this.notes;
 	}
 
-	public void setNotes(List<NoteBean> notes) {
-		notes = notes;
+	public void setNotes(ArrayList<NoteBean> notes) {
+		this.notes = notes;
 	}
 
 	public String getNomPromotion() {
