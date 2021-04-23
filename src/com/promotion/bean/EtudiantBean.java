@@ -12,13 +12,12 @@ public class EtudiantBean {
 	private long id;
 	private String nom;
 	private String prenom;
-	private int annee;
 	private String email;
 	private String motDePasse;
 	private Boolean admin;
 	private Timestamp dateDInscription;
 	
-	private List<NoteBean> Notes;
+	private List<NoteBean> notes;
 	private String nomPromotion;
 	
 	public EtudiantBean() {
@@ -42,12 +41,6 @@ public class EtudiantBean {
 	}
 	public void setPrenom(String prenom) {
 		this.prenom = prenom;
-	}
-	public int getAnnee() {
-		return annee;
-	}
-	public void setAnnee(int annee) {
-		this.annee = annee;
 	}
 	public String getEmail() {
 		return email;
@@ -75,11 +68,11 @@ public class EtudiantBean {
 	}
 
 	public List<NoteBean> getNotes() {
-		return Notes;
+		return notes;
 	}
 
 	public void setNotes(List<NoteBean> notes) {
-		Notes = notes;
+		notes = notes;
 	}
 
 	public String getNomPromotion() {

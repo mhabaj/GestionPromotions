@@ -13,14 +13,13 @@ public class DaoEtudiant extends DaoGenerator {
 
 	public static void creerEtudiant(EtudiantBean etudiant) {
 		try (Connection con = DriverManager.getConnection(dbURL, dbLogin, dbPassword)) {
-        	String insertQuery = "INSERT INTO Etudiant (admin, email, mot_de_passe, nom, prenom, date_inscription, annee, nomPromotion) VALUES (?, ?, ?, ?, ?, NOW(), ?, ?)";
+        	String insertQuery = "INSERT INTO Etudiant (admin, email, mot_de_passe, nom, prenom, date_inscription, nomPromotion) VALUES (?, ?, ?, ?, ?, NOW(), ?)";
         	try(PreparedStatement preparedStatement = con.prepareStatement(insertQuery)){
         		preparedStatement.setString(2, etudiant.getEmail());
         		preparedStatement.setString(3, etudiant.getMotDePasse());
         		preparedStatement.setString(4, etudiant.getNom());
         		preparedStatement.setBoolean(1, etudiant.getAdmin());
         		preparedStatement.setString(5, etudiant.getPrenom());
-        		preparedStatement.setInt(7, etudiant.getAnnee());
         		preparedStatement.setString(8, etudiant.getNomPromotion());
         		preparedStatement.executeUpdate();
         	}
@@ -62,7 +61,6 @@ public class DaoEtudiant extends DaoGenerator {
                     	etudiantRecherche.setDateDInscription(new Timestamp(resultSet.getDate(7).getTime()));
                     	etudiantRecherche.setAdmin(resultSet.getBoolean(2));
                     	etudiantRecherche.setPrenom(resultSet.getString(6));
-                    	etudiantRecherche.setAnnee(resultSet.getInt(8));
                     	etudiantRecherche.setNomPromotion(resultSet.getString(9));
                     }
                 }
@@ -128,7 +126,6 @@ public class DaoEtudiant extends DaoGenerator {
                     	etudiantNonAdmin.setDateDInscription(new Timestamp(resultSet.getDate(7).getTime()));
                     	etudiantNonAdmin.setAdmin(resultSet.getBoolean(2));
                     	etudiantNonAdmin.setPrenom(resultSet.getString(6));
-                    	etudiantNonAdmin.setAnnee(resultSet.getInt(8));
                     	etudiantNonAdmin.setNomPromotion(resultSet.getString(9));
                         listeDesEtudiantsNonAdmins.add(etudiantNonAdmin);
                     }
