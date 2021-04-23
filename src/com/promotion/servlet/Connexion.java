@@ -27,7 +27,7 @@ public class Connexion extends HttpServlet {
 	public static final String ATT_USERS = "etudiants";
 	public static final String VUE = "/WEB-INF/connexion.jsp";
 	private static final String ADMIN = "/WEB-INF/admin.jsp";
-	private static final String USER = "/WEB-INF/user.jsp";
+	private static final String USER = "/WEB-INF/etudiant.jsp";
 
 	@Override
 	public void init() throws ServletException {

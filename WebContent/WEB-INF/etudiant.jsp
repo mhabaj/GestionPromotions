@@ -13,8 +13,8 @@
                     <p class="succes">Vous êtes connecté(e) avec l'adresse : ${sessionScope.sessionEtudiant.email}</p>
                     <br>
                     <p> Vos Infos <p>
-                    <p> Nom : ${sessionScope.sessionUtilisateur.nom } <p>
-                    <p> Date d'inscription : ${sessionScope.sessionEtudiant.dateInscription } <p>
+                    <p> Nom : ${sessionScope.sessionEtudiant.nom } <p>
+                    <p> Date d'inscription : ${sessionScope.sessionEtudiant.dateDInscription } <p>
                     <%-- rajouter d'autres d'infos de l'étudiant ici PAS ENCORE TERMINE --%>                    
       </c:if>
 
