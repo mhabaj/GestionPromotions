@@ -8,10 +8,10 @@
 #------------------------------------------------------------
 
 CREATE TABLE Matiere(
-        id                 Int  Auto_increment  NOT NULL ,
-        nomMatiere         Varchar (50) NOT NULL ,
-        coefficientMatiere Double NOT NULL
-	,CONSTRAINT Matiere_PK PRIMARY KEY (id)
+        idMatiere          Int  Auto_increment  NOT NULL ,
+        nomMatiere         Varchar (50) ,
+        coefficientMatiere Double
+	,CONSTRAINT Matiere_PK PRIMARY KEY (idMatiere)
 )ENGINE=InnoDB;
 
 
@@ -20,10 +20,10 @@ CREATE TABLE Matiere(
 #------------------------------------------------------------
 
 CREATE TABLE Promotion(
-        id           Int  Auto_increment  NOT NULL ,
-        nomPromotion Varchar (50) NOT NULL ,
-        annee        Int NOT NULL
-	,CONSTRAINT Promotion_PK PRIMARY KEY (id)
+        idPromotion  Int  Auto_increment  NOT NULL ,
+        nomPromotion Varchar (50) ,
+        annee        Int
+	,CONSTRAINT Promotion_PK PRIMARY KEY (idPromotion)
 )ENGINE=InnoDB;
 
 
@@ -32,18 +32,17 @@ CREATE TABLE Promotion(
 #------------------------------------------------------------
 
 CREATE TABLE Etudiant(
-        id               Int  Auto_increment  NOT NULL ,
+        idEtudiant       Int  Auto_increment  NOT NULL ,
         admin            Bool NOT NULL ,
         email            Varchar (50) NOT NULL ,
         mot_de_passe     Varchar (50) NOT NULL ,
         nom              Varchar (50) NOT NULL ,
         prenom           Varchar (50) NOT NULL ,
         date_inscription TimeStamp NOT NULL ,
-        id_Promotion     Int NOT NULL
-	,CONSTRAINT Etudiant_PK PRIMARY KEY (id)
+        idPromotion      Int NOT NULL
+	,CONSTRAINT Etudiant_PK PRIMARY KEY (idEtudiant)
 
-	,CONSTRAINT Etudiant_Promotion_FK FOREIGN KEY (id_Promotion) REFERENCES Promotion(id) 
-	on delete cascade
+	,CONSTRAINT Etudiant_Promotion_FK FOREIGN KEY (idPromotion) REFERENCES Promotion(idPromotion)
 )ENGINE=InnoDB;
 
 
@@ -52,13 +51,14 @@ CREATE TABLE Etudiant(
 #------------------------------------------------------------
 
 CREATE TABLE etudie(
-        id          Int NOT NULL ,
-        id_Matiere  Int NOT NULL ,
-        id_Etudiant Int NOT NULL
-	,CONSTRAINT etudie_PK PRIMARY KEY (id,id_Matiere,id_Etudiant)
+        idPromotion Int NOT NULL ,
+        idMatiere   Int NOT NULL ,
+        idEtudiant  Int NOT NULL ,
+        note        Double
+	,CONSTRAINT etudie_PK PRIMARY KEY (idPromotion,idMatiere,idEtudiant)
 
-	,CONSTRAINT etudie_Promotion_FK FOREIGN KEY (id) REFERENCES Promotion(id) on delete cascade
-	,CONSTRAINT etudie_Matiere0_FK FOREIGN KEY (id_Matiere) REFERENCES Matiere(id) on delete cascade
-	,CONSTRAINT etudie_Etudiant1_FK FOREIGN KEY (id_Etudiant) REFERENCES Etudiant(id) on delete cascade
+	,CONSTRAINT etudie_Promotion_FK FOREIGN KEY (idPromotion) REFERENCES Promotion(idPromotion) on delete cascade
+	,CONSTRAINT etudie_Matiere0_FK FOREIGN KEY (idMatiere) REFERENCES Matiere(idMatiere) on delete cascade
+	,CONSTRAINT etudie_Etudiant1_FK FOREIGN KEY (idEtudiant) REFERENCES Etudiant(idEtudiant) on delete cascade
 )ENGINE=InnoDB;
 
