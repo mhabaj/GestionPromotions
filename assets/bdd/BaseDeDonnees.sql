@@ -22,7 +22,7 @@ CREATE TABLE Matiere(
 CREATE TABLE Promotion(
         id           Int  Auto_increment  NOT NULL ,
         nomPromotion Varchar (50) NOT NULL ,
-        annee        Int NOT NULL
+        annee        Int 
 	,CONSTRAINT Promotion_PK PRIMARY KEY (id)
 )ENGINE=InnoDB;
 
@@ -39,7 +39,7 @@ CREATE TABLE Etudiant(
         nom              Varchar (50) NOT NULL ,
         prenom           Varchar (50) NOT NULL ,
         date_inscription TimeStamp NOT NULL ,
-        id_Promotion     Int NOT NULL
+        id_Promotion     Int
 	,CONSTRAINT Etudiant_PK PRIMARY KEY (id)
 
 	,CONSTRAINT Etudiant_Promotion_FK FOREIGN KEY (id_Promotion) REFERENCES Promotion(id) ON DELETE CASCADE
@@ -54,7 +54,7 @@ CREATE TABLE Etudiant(
 CREATE TABLE etudie(
         id          Int NOT NULL ,
         id_Etudiant Int NOT NULL ,
-        note        Int NOT NULL
+        note        Int 
 	,CONSTRAINT etudie_PK PRIMARY KEY (id,id_Etudiant)
 
 	,CONSTRAINT etudie_Matiere_FK FOREIGN KEY (id) REFERENCES Matiere(id)
