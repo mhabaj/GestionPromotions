@@ -5,7 +5,7 @@
 <head>
 <meta charset="utf-8" />
 <title>Connexion</title>
-<link type="text/css" rel="stylesheet" href="style.css" />
+<link type="text/css" rel="stylesheet" href="css/form.css" />
 </head>
 <body>
 	<form method="post" action="connexion">
