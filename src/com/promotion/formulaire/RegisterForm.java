@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import com.promotion.bean.EtudiantBean;
+import com.promotion.bean.PromotionBean;
 import com.promotion.dao.DaoEtudiant;
 
 public class RegisterForm {
@@ -14,6 +15,9 @@ public class RegisterForm {
     private static final String CHAMP_CONF  = "confirmation";
     private static final String CHAMP_NOM   = "nom";
     private static final String CHAMP_ADMIN = "admin";
+    private static final String CHAMP_PRENOM = "prenom";
+    private static final String CHAMP_PROMOTION = "nomPromotion";
+    private static final String CHAMP_ANNEE = "annee";
     
     private String resultat;
     private Map<String, String> erreurs = new HashMap<String, String>();
@@ -37,6 +41,9 @@ public class RegisterForm {
         String confirmation = getValueField( request, CHAMP_CONF );
         String nom = getValueField( request, CHAMP_NOM );
         String admin = getValueField( request, CHAMP_ADMIN );
+        String prenom = getValueField(request, CHAMP_PRENOM);
+        String promotion = getValueField(request, CHAMP_PROMOTION);
+        String annee = getValueField(request, CHAMP_ANNEE);
         /* Validation du champ email. */
         try {
             validateEmail( email );
@@ -61,6 +68,29 @@ public class RegisterForm {
         }   
         etudiant.setNom(nom);
         
+        /*Validation du champ prénom*/
+        try {
+        	validateSurname(prenom);
+        }catch(Exception e) {
+        	setErreur(CHAMP_PRENOM, e.getMessage());
+        }
+        etudiant.setPrenom(prenom);
+        
+        /*Validation de la promo de l'étudiant*/
+        try {
+        	if(DaoEtudiant.promotionExists(promotion)) {
+        		etudiant.setNomPromotion(promotion);
+        		etudiant.setAnnee(DaoEtudiant.getAnneeEtudiant(promotion));
+        	}else {
+        		etudiant.setNomPromotion(promotion);
+        		etudiant.setAnnee(DaoEtudiant.getAnneeEtudiant(promotion));
+        		DaoEtudiant.creerPromotion(new PromotionBean(promotion, Integer.parseInt(annee)));
+        	}
+        }catch(Exception e) {
+        	setErreur(CHAMP_PROMOTION, e.getMessage());
+        }
+        
+        /*Vérification du checkbox admin*/
         if(admin == null) {
         	etudiant.setAdmin(false);
         }else {
@@ -77,10 +107,9 @@ public class RegisterForm {
             resultat = "Échec de l'inscription.";
         }
 		return etudiant;
-    	
     }
 
-	private String getValueField(HttpServletRequest request, String field) {
+    private String getValueField(HttpServletRequest request, String field) {
 		String value = request.getParameter( field );
         if ( value == null || value.trim().length() == 0 ) {
             return null;
@@ -88,6 +117,14 @@ public class RegisterForm {
             return value.trim();
         }
 	}
+	
+	private void validateSurname( String prenom ) throws Exception {
+        if ( prenom != null && prenom.length() < 3 ) {
+            throw new Exception( "Le prénom de l'étudiant doit contenir au moins 3 caractères." );
+        } else if ( prenom == null ) {
+            throw new Exception( "Le prénom de l'étudiant doit contenir au moins 3 caractères." );
+        }
+    }
 	
 	private void validateEmail(String email) throws Exception{
 		if ( email != null && email.trim().length() != 0 ) {
@@ -113,9 +150,9 @@ public class RegisterForm {
 	
 	private void validateName( String nom ) throws Exception {
         if ( nom != null && nom.length() < 3 ) {
-            throw new Exception( "Le nom d'utilisateur doit contenir au moins 3 caractères." );
+            throw new Exception( "Le nom de l'étudiant doit contenir au moins 3 caractères." );
         } else if ( nom == null ) {
-            throw new Exception( "Le nom d'utilisateur doit contenir au moins 3 caractères." );
+            throw new Exception( "Le nom de l'étudiant doit contenir au moins 3 caractères." );
         }
     }
 }

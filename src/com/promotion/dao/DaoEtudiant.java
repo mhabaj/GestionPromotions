@@ -1,6 +1,8 @@
 package com.promotion.dao;
 
 import com.promotion.bean.EtudiantBean;
+import com.promotion.bean.PromotionBean;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -13,19 +15,19 @@ public class DaoEtudiant extends DaoGenerator {
 
 	public static void creerEtudiant(EtudiantBean etudiant) {
 		try (Connection con = DriverManager.getConnection(dbURL, dbLogin, dbPassword)) {
-        	String insertQuery = "INSERT INTO Etudiant (admin, email, mot_de_passe, nom, prenom, date_inscription, annee) VALUES (?, ?, ?, ?, ?, NOW(), ?)";
+        	String insertQuery = "INSERT INTO Etudiant (admin, email, mot_de_passe, nom, prenom, idPromotion) VALUES (?, ?, ?, ?, ?, ?)";
         	try(PreparedStatement preparedStatement = con.prepareStatement(insertQuery)){
         		preparedStatement.setString(2, etudiant.getEmail());
         		preparedStatement.setString(3, etudiant.getMotDePasse());
         		preparedStatement.setString(4, etudiant.getNom());
         		preparedStatement.setBoolean(1, etudiant.getAdmin());
         		preparedStatement.setString(5, etudiant.getPrenom());
-        		preparedStatement.setInt(7, etudiant.getAnnee());
+        		preparedStatement.setInt(6, getIdPromotion(etudiant.getNomPromotion()));
         		preparedStatement.executeUpdate();
         	}
     	} catch(Exception e) {
     	throw new RuntimeException(e);
-    }
+    	}
 }
 
 	public static boolean emailExistsInDatabase(String login) {
@@ -137,6 +139,38 @@ public class DaoEtudiant extends DaoGenerator {
         }
     	return listeDesEtudiantsNonAdmins;
 	}
+	
+	public static void creerPromotion(PromotionBean promotion) {
+		try (Connection con = DriverManager.getConnection(dbURL, dbLogin, dbPassword)) {
+        	String insertQuery = "INSERT INTO Promotion ( nomPromotion, annee) VALUES (?, ?)";
+        	try(PreparedStatement preparedStatement = con.prepareStatement(insertQuery)){
+        		preparedStatement.setString(1, promotion.getNomPromotion());
+        		preparedStatement.setInt(2, promotion.getAnnee());
+        		preparedStatement.executeUpdate();
+        	}
+    	} catch(Exception e) {
+    	throw new RuntimeException(e);
+    	}
+	}
+	
+	public static boolean promotionExists(String nomPromotion) {
+		try (Connection con = DriverManager.getConnection( dbURL, dbLogin, dbPassword)) {
+
+            String selectQuery = "SELECT * FROM Promotion WHERE nomPromotion=?";
+            try ( PreparedStatement preparedStatement = con.prepareStatement( selectQuery ) ) {
+                preparedStatement.setString(1, nomPromotion);
+                try ( ResultSet resultSet = preparedStatement.executeQuery() ) {
+                    if ( resultSet.next()) {
+                    	return true;  
+                    } else {
+                        return false;
+                    }
+                }
+            }
+        } catch ( Exception e ) {
+            throw new RuntimeException( e );
+        }
+	}
 
 	public static void deleteEtudiant(int etudiantId) {
 		try(Connection con = DriverManager.getConnection(dbURL, dbLogin, dbPassword)){
@@ -148,6 +182,42 @@ public class DaoEtudiant extends DaoGenerator {
 		}catch(Exception e) {
 			throw new RuntimeException(e);
 		}	
+	}
+
+	public static int getAnneeEtudiant(String promotion) {
+		int anneeDeLaPromotion = 0;
+		try ( Connection con = DriverManager.getConnection(dbURL, dbLogin, dbPassword)) {
+            String selectQuery = "SELECT * FROM Promotion WHERE nomPromotion=?";
+            try ( PreparedStatement preparedStatement = con.prepareStatement( selectQuery ) ) {
+                preparedStatement.setString( 1, promotion );
+                try ( ResultSet resultSet = preparedStatement.executeQuery() ) {
+                    while ( resultSet.next() ) {
+                    	anneeDeLaPromotion = resultSet.getInt(3);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    	return anneeDeLaPromotion;
+	}
+	
+	public static int getIdPromotion(String promotion) {
+		int idPromotion = 0;
+		try ( Connection con = DriverManager.getConnection(dbURL, dbLogin, dbPassword)) {
+            String selectQuery = "SELECT * FROM Promotion WHERE nomPromotion=?";
+            try ( PreparedStatement preparedStatement = con.prepareStatement( selectQuery ) ) {
+                preparedStatement.setString( 1, promotion );
+                try ( ResultSet resultSet = preparedStatement.executeQuery() ) {
+                    while ( resultSet.next() ) {
+                    	idPromotion = resultSet.getInt(1);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    	return idPromotion;
 	}
 
 }

@@ -12,6 +12,11 @@ public class PromotionBean {
 	public PromotionBean() {
 		
 	}
+	
+	public PromotionBean(String nomPromotion, int annee) {
+		this.nomPromotion = nomPromotion;
+		this.annee = annee;
+	}
 
 	public String getNomPromotion() {
 		return nomPromotion;
