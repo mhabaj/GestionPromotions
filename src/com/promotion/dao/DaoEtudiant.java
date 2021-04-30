@@ -1,6 +1,8 @@
 package com.promotion.dao;
 
 import com.promotion.bean.EtudiantBean;
+import com.promotion.bean.MatiereBean;
+import com.promotion.bean.NoteBean;
 import com.promotion.bean.PromotionBean;
 
 import java.sql.Connection;
@@ -28,7 +30,32 @@ public class DaoEtudiant extends DaoGenerator {
     	} catch(Exception e) {
     	throw new RuntimeException(e);
     	}
-}
+	}
+	
+	public static void updateMoyenneGenerale(String email) {
+		EtudiantBean etudiant = getEtudiant(email);
+		ArrayList<NoteBean> ListeNotesEtudiant = getNotesEtudiant((int)etudiant.getId());
+		Double moyenne = 0.0;
+		if(!ListeNotesEtudiant.isEmpty()) {
+			for (NoteBean note : ListeNotesEtudiant) {
+			      moyenne += note.getNote() * note.getMatiere().getCoefficientMatiere();
+			}
+			moyenne = moyenne/(double)ListeNotesEtudiant.size();
+		}
+		
+		try (Connection con = DriverManager.getConnection(dbURL, dbLogin, dbPassword)) {
+        	String updateQuery = "UPDATE Etudiant SET moyenneGenerale=? WHERE email=?";
+        	try(PreparedStatement preparedStatement = con.prepareStatement(updateQuery)){
+        		preparedStatement.setDouble(1, moyenne);
+        		System.out.println(moyenne);
+        		System.out.println(email);
+        		preparedStatement.setString(2, email);
+        		preparedStatement.executeUpdate();
+        	}
+    	} catch(Exception e) {
+    	throw new RuntimeException(e);
+    	}
+	}
 
 	public static boolean emailExistsInDatabase(String login) {
 		try ( Connection connection = DriverManager.getConnection(dbURL, dbLogin, dbPassword)) {
@@ -57,13 +84,14 @@ public class DaoEtudiant extends DaoGenerator {
                 statement.setString(1, email);
                 try (ResultSet resultSet = statement.executeQuery()) {
                     while (resultSet.next()) {
+                    	etudiantRecherche.setId(resultSet.getInt(1));
                     	etudiantRecherche.setEmail(resultSet.getString(3));
                     	etudiantRecherche.setMotDePasse(resultSet.getString(4));
                     	etudiantRecherche.setNom(resultSet.getString(5));
                     	etudiantRecherche.setDateDInscription(new Timestamp(resultSet.getDate(7).getTime()));
                     	etudiantRecherche.setAdmin(resultSet.getBoolean(2));
                     	etudiantRecherche.setPrenom(resultSet.getString(6));
-                    	etudiantRecherche.setAnnee(resultSet.getInt(8));
+                    	etudiantRecherche.setMoyenneGenerale(resultSet.getDouble(9));
                     }
                 }
         	}
@@ -130,6 +158,7 @@ public class DaoEtudiant extends DaoGenerator {
                     	etudiantNonAdmin.setAdmin(resultSet.getBoolean(2));
                     	etudiantNonAdmin.setPrenom(resultSet.getString(6));
                     	etudiantNonAdmin.setAnnee(resultSet.getInt(8));
+                    	etudiantNonAdmin.setMoyenneGenerale(resultSet.getDouble(9));
                         listeDesEtudiantsNonAdmins.add(etudiantNonAdmin);
                     }
                 }
@@ -218,6 +247,120 @@ public class DaoEtudiant extends DaoGenerator {
             throw new RuntimeException(e);
         }
     	return idPromotion;
+	}
+	
+	public static ArrayList<NoteBean> getNotesEtudiant(int etudiantId) {
+		ArrayList<NoteBean> ListeNotesEtudiant = new ArrayList<NoteBean>();
+    	try ( Connection con = DriverManager.getConnection(dbURL, dbLogin, dbPassword)) {
+            String selectQuery = "SELECT * FROM etudie WHERE idEtudiant=?";
+            try ( PreparedStatement preparedStatement = con.prepareStatement( selectQuery ) ) {
+                preparedStatement.setInt( 1, etudiantId );
+                try ( ResultSet resultSet = preparedStatement.executeQuery() ) {
+                    while ( resultSet.next() ) {
+                    	NoteBean note = new NoteBean();
+                    	note.setIdNote(resultSet.getInt(3));
+                    	note.setMatiere(getMatiereFromIdMatiere(resultSet.getInt(2)));
+                    	note.setNote(resultSet.getDouble(4));
+                    	ListeNotesEtudiant.add(note);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    	return ListeNotesEtudiant;
+	}
+	
+	public static MatiereBean getMatiereFromIdMatiere(int idMatiere) {
+		MatiereBean matiere = new MatiereBean();
+		try ( Connection con = DriverManager.getConnection(dbURL, dbLogin, dbPassword)) {
+            String selectQuery = "SELECT * FROM Matiere WHERE idMatiere=?";
+            try ( PreparedStatement preparedStatement = con.prepareStatement( selectQuery ) ) {
+                preparedStatement.setInt( 1, idMatiere );
+                try ( ResultSet resultSet = preparedStatement.executeQuery() ) {
+                    while ( resultSet.next() ) {
+                    	matiere.setId(resultSet.getInt(1));
+                    	matiere.setNomMatiere(resultSet.getString(2));
+                    	matiere.setCoefficientMatiere(resultSet.getDouble(3));
+                    }
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    	return matiere;
+	}
+
+	public static int getIdEtudiant(String email) {
+		int idEtudiant = 0;
+		try ( Connection con = DriverManager.getConnection(dbURL, dbLogin, dbPassword)) {
+            String selectQuery = "SELECT * FROM Etudiant WHERE email=?";
+            try ( PreparedStatement preparedStatement = con.prepareStatement( selectQuery ) ) {
+                preparedStatement.setString( 1, email );
+                try ( ResultSet resultSet = preparedStatement.executeQuery() ) {
+                    while ( resultSet.next() ) {
+                    	idEtudiant = resultSet.getInt(1);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    	return idEtudiant;
+	}
+	
+	public static int getIdPromotionFromEmailEtudiant(String email) {
+		int idPromotion = 0;
+		try ( Connection con = DriverManager.getConnection(dbURL, dbLogin, dbPassword)) {
+            String selectQuery = "SELECT * FROM Etudiant WHERE email=?";
+            try ( PreparedStatement preparedStatement = con.prepareStatement( selectQuery ) ) {
+                preparedStatement.setString( 1, email );
+                try ( ResultSet resultSet = preparedStatement.executeQuery() ) {
+                    while ( resultSet.next() ) {
+                    	idPromotion = resultSet.getInt(8);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    	return idPromotion;
+	}
+	
+	public static String getNomPromotionFromIdPromotion(int idPromotion) {
+		String nomPromotion = "";
+		try ( Connection con = DriverManager.getConnection(dbURL, dbLogin, dbPassword)) {
+            String selectQuery = "SELECT * FROM Promotion WHERE idPromotion=?";
+            try ( PreparedStatement preparedStatement = con.prepareStatement( selectQuery ) ) {
+                preparedStatement.setInt( 1, idPromotion );
+                try ( ResultSet resultSet = preparedStatement.executeQuery() ) {
+                    while ( resultSet.next() ) {
+                    	nomPromotion = resultSet.getString(2);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    	return nomPromotion;
+	}
+	
+	public static int getAnneePromotionFromNomPromotion(String nomPromotion) {
+		int anneePromotion = 0;
+		try ( Connection con = DriverManager.getConnection(dbURL, dbLogin, dbPassword)) {
+            String selectQuery = "SELECT * FROM Promotion WHERE nomPromotion=?";
+            try ( PreparedStatement preparedStatement = con.prepareStatement( selectQuery ) ) {
+                preparedStatement.setString( 1, nomPromotion );
+                try ( ResultSet resultSet = preparedStatement.executeQuery() ) {
+                    while ( resultSet.next() ) {
+                    	anneePromotion = resultSet.getInt(3);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    	return anneePromotion;
 	}
 
 }

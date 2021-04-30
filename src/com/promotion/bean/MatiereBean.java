@@ -33,6 +33,11 @@ public class MatiereBean {
 	public void setCoefficientMatiere(Double coefficientMatiere) {
 		this.coefficientMatiere = coefficientMatiere;
 	}
+
+	@Override
+	public String toString() {
+		return " nomMatiere=" + nomMatiere + ", coefficientMatiere=" + coefficientMatiere;
+	}
 	
 	
 }

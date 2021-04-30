@@ -17,6 +17,7 @@ public class EtudiantBean {
 	private String motDePasse;
 	private Boolean admin;
 	private Timestamp dateDInscription;
+	private double moyenneGenerale = 0.0;
 	
 	private ArrayList<NoteBean> notes;
 	private String nomPromotion;
@@ -89,5 +90,24 @@ public class EtudiantBean {
 	public void setNomPromotion(String nomPromotion) {
 		this.nomPromotion = nomPromotion;
 	}
+
+	public double getMoyenneGenerale() {
+		return moyenneGenerale;
+	}
+
+	public void setMoyenneGenerale(double moyenneGenerale) {
+		this.moyenneGenerale = moyenneGenerale;
+	}
+
+	@Override
+	public String toString() {
+		return "EtudiantBean [id=" + id + ", nom=" + nom + ", prenom=" + prenom + ", annee=" + annee + ", email="
+				+ email + ", motDePasse=" + motDePasse + ", admin=" + admin + ", dateDInscription=" + dateDInscription
+				+ ", moyenneGenerale=" + moyenneGenerale + ", notes=" + notes + ", nomPromotion=" + nomPromotion + "]";
+	}
+
+
+	
+	
 	
 }

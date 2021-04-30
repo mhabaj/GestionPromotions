@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le :  sam. 24 avr. 2021 à 00:42
+-- Généré le :  sam. 01 mai 2021 à 01:14
 -- Version du serveur :  5.7.17
 -- Version de PHP :  7.1.3
 
@@ -36,16 +36,18 @@ CREATE TABLE `etudiant` (
   `nom` varchar(50) NOT NULL,
   `prenom` varchar(50) NOT NULL,
   `date_inscription` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `idPromotion` int(11) NOT NULL
+  `idPromotion` int(11) NOT NULL,
+  `moyenneGenerale` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `etudiant`
 --
 
-INSERT INTO `etudiant` (`idEtudiant`, `admin`, `email`, `mot_de_passe`, `nom`, `prenom`, `date_inscription`, `idPromotion`) VALUES
-(1, 1, 'admin@gmail.com', '123', 'admin', 'admin', '2021-04-23 22:41:29', 1),
-(2, 0, 'user@gmail.com', '123', 'user', 'user', '2021-04-23 22:41:29', 1);
+INSERT INTO `etudiant` (`idEtudiant`, `admin`, `email`, `mot_de_passe`, `nom`, `prenom`, `date_inscription`, `idPromotion`, `moyenneGenerale`) VALUES
+(1, 1, 'admin@gmail.com', '123', 'admin', 'admin', '2021-04-23 22:41:29', 1, 0),
+(2, 0, 'user@gmail.com', '123', 'user', 'user', '2021-04-30 23:10:05', 1, 0),
+(7, 0, 'test@gmail.com', '123', 'test', 'test', '2021-04-30 23:04:23', 1, 26.625);
 
 -- --------------------------------------------------------
 
@@ -59,6 +61,14 @@ CREATE TABLE `etudie` (
   `idEtudiant` int(11) NOT NULL,
   `note` double DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `etudie`
+--
+
+INSERT INTO `etudie` (`idPromotion`, `idMatiere`, `idEtudiant`, `note`) VALUES
+(1, 1, 7, 20),
+(1, 2, 7, 15.5);
 
 -- --------------------------------------------------------
 
@@ -77,7 +87,8 @@ CREATE TABLE `matiere` (
 --
 
 INSERT INTO `matiere` (`idMatiere`, `nomMatiere`, `coefficientMatiere`) VALUES
-(1, 'J2e', 1.5);
+(1, 'J2e', 1.5),
+(2, 'anglais', 1.5);
 
 -- --------------------------------------------------------
 
@@ -137,12 +148,12 @@ ALTER TABLE `promotion`
 -- AUTO_INCREMENT pour la table `etudiant`
 --
 ALTER TABLE `etudiant`
-  MODIFY `idEtudiant` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `idEtudiant` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT pour la table `matiere`
 --
 ALTER TABLE `matiere`
-  MODIFY `idMatiere` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idMatiere` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT pour la table `promotion`
 --

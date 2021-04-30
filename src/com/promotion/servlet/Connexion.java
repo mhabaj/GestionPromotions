@@ -28,6 +28,7 @@ public class Connexion extends HttpServlet {
 	public static final String VUE = "/WEB-INF/connexion.jsp";
 	private static final String ADMIN = "/WEB-INF/admin.jsp";
 	private static final String USER = "/WEB-INF/etudiant.jsp";
+	private static final String  NOTES = "notes";
 
 	@Override
 	public void init() throws ServletException {
@@ -70,8 +71,11 @@ public class Connexion extends HttpServlet {
 				this.getServletContext().getRequestDispatcher(ADMIN).forward(request, response);
 			}
 
-			else
+			else {
+				session.setAttribute(NOTES, etudiant.getNotes());
 				this.getServletContext().getRequestDispatcher(USER).forward(request, response);
+			}
+				
 		} else {
 			this.getServletContext().getRequestDispatcher(VUE).forward(request, response);
 		}

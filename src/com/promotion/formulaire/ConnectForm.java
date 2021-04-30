@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import com.promotion.bean.EtudiantBean;
+import com.promotion.bean.NoteBean;
 import com.promotion.dao.DaoEtudiant;
 
 public class ConnectForm {
@@ -49,6 +50,8 @@ public class ConnectForm {
 		}
 		etudiant.setMotDePasse(motDePasse);
 		
+		
+		
 		//générer le résultat de la validation
 		if(erreurs.isEmpty() && DaoEtudiant.loginExistsInDatabase(email, motDePasse)) {
 			resultat = "succès de la connexion.";
@@ -57,7 +60,23 @@ public class ConnectForm {
 				etudiant.setAdmin(DaoEtudiant.etudiantIsAdmin(etudiant));
 			}
 			etudiant.setNom(DaoEtudiant.getEtudiant(etudiant.getEmail()).getNom());
+			etudiant.setPrenom(DaoEtudiant.getEtudiant(etudiant.getEmail()).getPrenom());
 			etudiant.setDateDInscription(DaoEtudiant.getEtudiant(etudiant.getEmail()).getDateDInscription());
+			//obtenir les notes de l'étudiant et sa promotion
+			etudiant.setNomPromotion(DaoEtudiant.getNomPromotionFromIdPromotion(DaoEtudiant.getIdPromotionFromEmailEtudiant(email)));
+			etudiant.setId(DaoEtudiant.getIdEtudiant(email));
+			etudiant.setNotes(DaoEtudiant.getNotesEtudiant((int)etudiant.getId()));
+			etudiant.setAnnee(DaoEtudiant.getAnneePromotionFromNomPromotion(etudiant.getNomPromotion()));
+			
+			//calculer la moyenne generale
+			Double moyenneGenerale = 0.0;
+			for (NoteBean note : DaoEtudiant.getNotesEtudiant((int)etudiant.getId())) {
+			      moyenneGenerale += note.getNote() * note.getMatiere().getCoefficientMatiere();
+			}
+			moyenneGenerale = moyenneGenerale/(double)DaoEtudiant.getNotesEtudiant((int)etudiant.getId()).size();
+			DaoEtudiant.updateMoyenneGenerale(etudiant.getEmail());
+			etudiant.setMoyenneGenerale(DaoEtudiant.getEtudiant(email).getMoyenneGenerale());
+			System.out.println(etudiant);
 		}else {
 			resultat = "Echec de la connexion";
 		}

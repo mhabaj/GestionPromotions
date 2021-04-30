@@ -33,5 +33,9 @@ public class NoteBean {
 		this.note = note;
 	}
 	
+	public String toString() {
+		return "Matiere : " + matiere + " ,Note :" + note + "\n";
+	}
+	
 	
 }

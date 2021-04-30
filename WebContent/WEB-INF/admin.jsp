@@ -15,7 +15,9 @@
 			<th>Email</th>
 			<th>Mot de Passe</th>
 			<th>Nom</th>
+			<th>Prénom</th>
 			<th>Date d'inscription</th>
+			<th>Moyenne Générale</th>
 			<th> </th>
 		</tr>
 		<c:forEach items="${sessionScope.etudiants}" var="listItem">
@@ -23,7 +25,9 @@
 				<td> ${listItem.email}</td>
 				<td>${listItem.motDePasse}</td>
 				<td align="center"> ${listItem.nom}</td>
+				<td align="center">${listItem.prenom}</td>
 				<td align="center"> ${listItem.dateDInscription}</td>
+				<td align="center"> ${listItem.moyenneGenerale}</td>
 				<td> <a href="DeleteEtudiant?etudiantId=${listItem.id}">Supprimer</a> </td>
 			</tr>
 		</c:forEach>
