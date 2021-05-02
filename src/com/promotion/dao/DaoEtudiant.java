@@ -36,11 +36,13 @@ public class DaoEtudiant extends DaoGenerator {
 		EtudiantBean etudiant = getEtudiant(email);
 		ArrayList<NoteBean> ListeNotesEtudiant = getNotesEtudiant((int)etudiant.getId());
 		Double moyenne = 0.0;
+		Double sommeCoefficient = 0.0;
 		if(!ListeNotesEtudiant.isEmpty()) {
 			for (NoteBean note : ListeNotesEtudiant) {
 			      moyenne += note.getNote() * note.getMatiere().getCoefficientMatiere();
+			      sommeCoefficient += note.getMatiere().getCoefficientMatiere();
 			}
-			moyenne = moyenne/(double)ListeNotesEtudiant.size();
+			moyenne = moyenne/sommeCoefficient;
 		}
 		
 		try (Connection con = DriverManager.getConnection(dbURL, dbLogin, dbPassword)) {
@@ -203,7 +205,7 @@ public class DaoEtudiant extends DaoGenerator {
 
 	public static void deleteEtudiant(int etudiantId) {
 		try(Connection con = DriverManager.getConnection(dbURL, dbLogin, dbPassword)){
-			String deleteQuery = "DELETE FROM Etudiant WHERE id=?;";
+			String deleteQuery = "DELETE FROM Etudiant WHERE idEtudiant=?;";
 			try(PreparedStatement preparedStatement = con.prepareStatement(deleteQuery)) {
 				preparedStatement.setInt(1, etudiantId);
 				preparedStatement.executeUpdate();
