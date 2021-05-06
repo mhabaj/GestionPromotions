@@ -19,7 +19,7 @@
 		<c:forEach items="${sessionScope.promotions}" var="listItem">
 			<tr>
 				<td align="center"> ${listItem.nomPromotion}</td>
-				<td align="center"> ${listItem.calculeMoyenneGeneralePromo()}</td>
+				<td align="center"> ${listItem.moyenneGeneralePromo}</td>
 			</tr>
 		</c:forEach>
 	</table>

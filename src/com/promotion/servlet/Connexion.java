@@ -50,7 +50,10 @@ public class Connexion extends HttpServlet {
 		/* Traitement de la requête et récupération du bean en résultant */
 		EtudiantBean etudiant = form.ConnectUSer(request);
 		ArrayList<PromotionBean> promos = DaoEtudiant.getAllPromotions();
-		
+		for(PromotionBean currentPromo: promos) {
+			currentPromo.setMoyenneGeneralePromo(
+					DaoEtudiant.calculeMoyenneGeneralePromo(currentPromo));
+		}
 		/* Récupération de la session depuis la requête */
 		HttpSession session = request.getSession();
 

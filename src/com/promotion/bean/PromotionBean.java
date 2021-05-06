@@ -51,30 +51,22 @@ public class PromotionBean {
 		this.matieres = matieres;
 	}
 
-	public double calculeMoyenneGeneralePromo() {
-		Double moyenne = 0.0;
-		Double sommeCoeff = 0.0;
-		if (this.getEtudiants() != null) {
-			for (EtudiantBean currentEtudiant : this.getEtudiants()) {
-				moyenne += currentEtudiant.getMoyenneGenerale();
-				sommeCoeff++;
-			}
-		}
-		return Math.round((moyenne / sommeCoeff) * 100.0) / 100.0;
-	}
-
 	/**
-	 * @return the moyenneGenerale
+	 * @return the moyenneGeneralePromo
 	 */
-	public double getMoyenneGenerale() {
+	public double getMoyenneGeneralePromo() {
 		return moyenneGeneralePromo;
 	}
 
 	/**
-	 * @param moyenneGenerale the moyenneGenerale to set
+	 * @param moyenneGeneralePromo the moyenneGeneralePromo to set
 	 */
-	public void setMoyenneGenerale(double moyenneGenerale) {
-		this.moyenneGeneralePromo = moyenneGenerale;
+	public void setMoyenneGeneralePromo(double moyenneGeneralePromo) {
+		this.moyenneGeneralePromo = moyenneGeneralePromo;
 	}
+
+	
+
+
 
 }

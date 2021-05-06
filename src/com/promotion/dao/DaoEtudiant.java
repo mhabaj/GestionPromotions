@@ -79,6 +79,11 @@ public class DaoEtudiant extends DaoGenerator {
 		}
 
 	}
+	
+	
+
+	
+	
 
 	public static ArrayList<MatiereBean> getMatieresFromPromotionId(int promotionId) {
 ///////////////////////////
@@ -266,6 +271,16 @@ public class DaoEtudiant extends DaoGenerator {
 		return listeDesEtudiantsNonAdmins;
 	}
 
+	public static double calculeMoyenneGeneralePromo(PromotionBean promo) {
+		Double moyenne = 0.0;
+		Double sommeCoeff = 0.0;
+		for (EtudiantBean currentEtudiant : promo.getEtudiants()) {
+			moyenne += currentEtudiant.getMoyenneGenerale();
+			sommeCoeff++;
+		}
+		
+		return Math.round((moyenne / sommeCoeff) * 100.0) / 100.0;
+	}
 	
 	
 	public static ArrayList<PromotionBean> getAllPromotions() {

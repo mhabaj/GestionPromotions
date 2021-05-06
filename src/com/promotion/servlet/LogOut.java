@@ -21,6 +21,7 @@ public class LogOut extends HttpServlet {
 		HttpSession session = request.getSession();
 		if(session != null) {
 			session.invalidate();
+			session = null;
 		}
 		response.sendRedirect("connexion");
 	}
