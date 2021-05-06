@@ -9,7 +9,7 @@ import java.util.ArrayList;
  */
 public class EtudiantBean {
 
-	private long id;
+	private int id;
 	private String nom;
 	private String prenom;
 	private int annee;
@@ -26,10 +26,10 @@ public class EtudiantBean {
 		
 	}
 	
-	public long getId() {
+	public int getId() {
 		return id;
 	}
-	public void setId(long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 	public String getNom() {
@@ -98,6 +98,8 @@ public class EtudiantBean {
 	public void setMoyenneGenerale(double moyenneGenerale) {
 		this.moyenneGenerale = moyenneGenerale;
 	}
+	
+	
 
 	@Override
 	public String toString() {

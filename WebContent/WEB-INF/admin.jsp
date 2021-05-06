@@ -8,6 +8,23 @@
 <title>Etudiant admin</title>
 </head>
 <body>
+<p>Moyenne generale par promotion: </p>
+
+
+<table border="1">
+		<tr>
+			<th>Nom de la promotion</th>
+			<th>Moyenne Générale</th>
+		</tr>
+		<c:forEach items="${sessionScope.promotions}" var="listItem">
+			<tr>
+				<td align="center"> ${listItem.nomPromotion}</td>
+				<td align="center"> ${listItem.calculeMoyenneGeneralePromo()}</td>
+			</tr>
+		</c:forEach>
+	</table>
+
+
 	<p>Liste des étudiants non Admin</p>
 
 	<table border="1">

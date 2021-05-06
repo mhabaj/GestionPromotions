@@ -9,9 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.promotion.bean.EtudiantBean;
+import com.promotion.dao.DaoEtudiant;
 import com.promotion.dao.DaoGenerator;
 import com.promotion.formulaire.RegisterForm;
-
 
 @WebServlet("/inscription")
 public class Inscription extends HttpServlet {
@@ -23,10 +23,13 @@ public class Inscription extends HttpServlet {
 	public static final String ATT_FORM = "form";
 	public static final String VUE = "/WEB-INF/inscription.jsp";
 	public static final String CONNEXION_VUE = "/WEB-INF/connexion.jsp";
+	private static final String PROMOS = "promos";
 
 	@Override
 	public void init() throws ServletException {
 		DaoGenerator.init(this.getServletContext());
+		this.getServletContext().setAttribute(PROMOS, DaoEtudiant.getAllPromotions());
+
 	}
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -39,14 +42,15 @@ public class Inscription extends HttpServlet {
 		RegisterForm form = new RegisterForm();
 
 		/*
-		 * Appel au traitement et à la validation de la requête, et récupération
-		 * du bean en résultant
+		 * Appel au traitement et à la validation de la requête, et récupération du
+		 * bean en résultant
 		 */
 		EtudiantBean etudiant = form.registerEtudiant(request);
 
 		/* Stockage du formulaire et du bean dans l'objet request */
 		request.setAttribute(ATT_FORM, form);
 		request.setAttribute(ATT_USER, etudiant);
+		System.out.println(etudiant.getNomPromotion()+"LALALALALALA");
 		if (form.getErreurs().isEmpty())
 			this.getServletContext().getRequestDispatcher(CONNEXION_VUE).forward(request, response);
 		else

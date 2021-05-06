@@ -12,7 +12,7 @@ import com.promotion.dao.DaoEtudiant;
 public class ConnectForm {
 	private static final String CHAMP_EMAIL = "email";
 	private static final String CHAMP_PASS = "motdepasse";
-	
+
 	private String resultat;
 	private Map<String, String> erreurs = new HashMap<String, String>();
 
@@ -23,66 +23,61 @@ public class ConnectForm {
 	public Map<String, String> getErreurs() {
 		return erreurs;
 	}
-	
+
 	private void setErreur(String champ, String message) {
 		erreurs.put(champ, message);
 	}
-	
+
 	public EtudiantBean ConnectUSer(HttpServletRequest request) {
-		//Récupération des champs du formulaire
+		// Récupération des champs du formulaire
 		String email = getValueField(request, CHAMP_EMAIL);
 		String motDePasse = getValueField(request, CHAMP_PASS);
-		
+
 		EtudiantBean etudiant = new EtudiantBean();
-		//valider le champ du mail
+		// valider le champ du mail
 		try {
 			validateEmail(email);
-		}catch(Exception e ) {
+		} catch (Exception e) {
 			setErreur(CHAMP_EMAIL, e.getMessage());
 		}
 		etudiant.setEmail(email);
-		
-		//valider le champ de mot de passe
+
+		// valider le champ de mot de passe
 		try {
 			validatePassword(motDePasse);
-		}catch(Exception e) {
+		} catch (Exception e) {
 			setErreur(CHAMP_PASS, e.getMessage());
 		}
 		etudiant.setMotDePasse(motDePasse);
-		
-		
-		
-		//générer le résultat de la validation
-		if(erreurs.isEmpty() && DaoEtudiant.loginExistsInDatabase(email, motDePasse)) {
+
+		// générer le résultat de la validation
+		if (erreurs.isEmpty() && DaoEtudiant.loginExistsInDatabase(email, motDePasse)) {
 			resultat = "succès de la connexion.";
-			
-			if(etudiant != null) {
+
+			if (etudiant != null) {
 				etudiant.setAdmin(DaoEtudiant.etudiantIsAdmin(etudiant));
 			}
 			etudiant.setNom(DaoEtudiant.getEtudiant(etudiant.getEmail()).getNom());
 			etudiant.setPrenom(DaoEtudiant.getEtudiant(etudiant.getEmail()).getPrenom());
 			etudiant.setDateDInscription(DaoEtudiant.getEtudiant(etudiant.getEmail()).getDateDInscription());
-			//obtenir les notes de l'étudiant et sa promotion
-			etudiant.setNomPromotion(DaoEtudiant.getNomPromotionFromIdPromotion(DaoEtudiant.getIdPromotionFromEmailEtudiant(email)));
+			// obtenir les notes de l'étudiant et sa promotion
+			etudiant.setNomPromotion(
+					DaoEtudiant.getNomPromotionFromIdPromotion(DaoEtudiant.getIdPromotionFromEmailEtudiant(email)));
 			etudiant.setId(DaoEtudiant.getIdEtudiant(email));
-			etudiant.setNotes(DaoEtudiant.getNotesEtudiant((int)etudiant.getId()));
+			etudiant.setNotes(DaoEtudiant.getNotesEtudiant((int) etudiant.getId()));
 			etudiant.setAnnee(DaoEtudiant.getAnneePromotionFromNomPromotion(etudiant.getNomPromotion()));
-			
-			//calculer la moyenne generale
-			Double moyenneGenerale = 0.0;
-			for (NoteBean note : DaoEtudiant.getNotesEtudiant((int)etudiant.getId())) {
-			      moyenneGenerale += note.getNote() * note.getMatiere().getCoefficientMatiere();
-			}
-			moyenneGenerale = moyenneGenerale/(double)DaoEtudiant.getNotesEtudiant((int)etudiant.getId()).size();
-			DaoEtudiant.updateMoyenneGenerale(etudiant.getEmail());
-			etudiant.setMoyenneGenerale(DaoEtudiant.getEtudiant(email).getMoyenneGenerale());
-			System.out.println(etudiant);
-		}else {
-			resultat = "Echec de la connexion";
+
+			// calculer la moyenne generale
+
+			etudiant.setMoyenneGenerale(DaoEtudiant.calculeMoyenneGeneraleEtudiant(email));
+			// System.out.println(etudiant);
+		} else {
+			setErreur(CHAMP_PASS, "Mot de passe invalide");
+			return null;
 		}
 		return etudiant;
 	}
-	
+
 	private String getValueField(HttpServletRequest request, String nomChamp) {
 		String value = request.getParameter(nomChamp);
 		if (value == null || value.trim().length() == 0) {
@@ -91,7 +86,7 @@ public class ConnectForm {
 			return value;
 		}
 	}
-	
+
 	private void validatePassword(String motDePasse) throws Exception {
 		if (motDePasse != null) {
 			if (motDePasse.length() < 3) {
@@ -101,11 +96,12 @@ public class ConnectForm {
 			throw new Exception("Merci de saisir votre mot de passe.");
 		}
 	}
-	
+
 	private void validateEmail(String email) throws Exception {
 		if (email != null && !email.matches("([^.@]+)(\\.[^.@]+)*@([^.@]+\\.)+([^.@]+)")) {
 			throw new Exception("Merci de saisir une adresse mail valide.");
-		} else if (DaoEtudiant.emailExistsInDatabase(email) == false) { //vérifier que l'email existe bien dans la base de données
+		} else if (DaoEtudiant.emailExistsInDatabase(email) == false) { // vérifier que l'email existe bien dans la
+																		// base de données
 			throw new Exception("Email introuvable.");
 		}
 	}

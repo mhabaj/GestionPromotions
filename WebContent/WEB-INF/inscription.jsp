@@ -9,7 +9,7 @@
         <link type="text/css" rel="stylesheet" href="css/form.css" />
     </head>
     <body>
-        <form method="post" action="inscription">
+        <form method="post" action="inscription" id="inscriptionForm">
             <fieldset>
                 <legend>Inscription</legend>
                 <p>Inscrivez-vous ici</p>
@@ -40,14 +40,15 @@
                 <br />
                 
                 <label for="nomPromotion">promotion de l'étudiant</label>
-                <input type="text" id="nomPromotion" name="nomPromotion" value="<c:out value="${etudiant.nomPromotion}"/>" size="20" maxlength="20" />
+                <select form="inscriptionForm" id="nomPromotion" name="nomPromotion"> 
+                <c:forEach items="${promos}" var="listItem">
+						<option value = "${listItem.nomPromotion}">${listItem.nomPromotion} </option>
+				</c:forEach>
+                </select>                
                 <span class="erreur">${form.erreurs['nomPromotion']}</span>
                 <br />
                 
-                <label for="annee">annee de la promo</label>
-                <input type="text" id="annee" name="annee" value="<c:out value="${etudiant.annee}"/>" size="20" maxlength="20" />
-                <span class="erreur">${form.erreurs['annee']}</span>
-                <br />
+               
                 
 				<label for="admin">Admin ?</label>
 				<input type="checkbox" id="admin" name="admin">
