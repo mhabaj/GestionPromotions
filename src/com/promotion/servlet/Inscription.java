@@ -46,14 +46,13 @@ public class Inscription extends HttpServlet {
 		 * bean en résultant
 		 */
 		EtudiantBean etudiant = form.registerEtudiant(request);
-
 		/* Stockage du formulaire et du bean dans l'objet request */
 		request.setAttribute(ATT_FORM, form);
 		request.setAttribute(ATT_USER, etudiant);
-		System.out.println(etudiant.getNomPromotion()+"LALALALALALA");
 		if (form.getErreurs().isEmpty())
 			this.getServletContext().getRequestDispatcher(CONNEXION_VUE).forward(request, response);
 		else
 			this.getServletContext().getRequestDispatcher(VUE).forward(request, response);
+
 	}
 }

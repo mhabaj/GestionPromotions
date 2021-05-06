@@ -56,7 +56,7 @@
                 <input type="submit" value="Inscription" class="sansLabel" />
                 <br />
                 
-                <p class="${empty form.erreurs ? 'success' : 'erreur'}">${form.result}</p>
+                <p class="${empty form.erreurs ? 'success' : 'erreur'}">${form.resultat}</p>
             </fieldset>
         </form>
     </body>

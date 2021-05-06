@@ -102,9 +102,9 @@ public class RegisterForm {
             resultat = "Succès de l'inscription.";
             //créer l'étudiant dans la base de données
             DaoEtudiant.creerEtudiant(etudiant);
-            System.out.println(etudiant + " ESSAI");
         } else {
-            resultat = "Échec de l'inscription.";
+        	setErreur(CHAMP_PASS, "Mot de passe invalide");
+			return null;
         }
 		return etudiant;
     }
