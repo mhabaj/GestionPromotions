@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `comprend` (
   `idPromotion` int NOT NULL,
   PRIMARY KEY (`idMatiere`,`idPromotion`),
   KEY `comprend_Promotion0_FK` (`idPromotion`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Déchargement des données de la table `comprend`
@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS `etudiant` (
   `idPromotion` int DEFAULT NULL,
   PRIMARY KEY (`idEtudiant`),
   KEY `Etudiant_Promotion_FK` (`idPromotion`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Déchargement des données de la table `etudiant`
@@ -88,7 +88,7 @@ CREATE TABLE IF NOT EXISTS `etudie` (
   PRIMARY KEY (`idMatiere`,`idEtudiant`,`idNote`) USING BTREE,
   KEY `etudie_Etudiant0_FK` (`idEtudiant`),
   KEY `idNote` (`idNote`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Déchargement des données de la table `etudie`
@@ -115,7 +115,7 @@ CREATE TABLE IF NOT EXISTS `matiere` (
   `nomMatiere` varchar(50) DEFAULT NULL,
   `coefficientMatiere` double DEFAULT NULL,
   PRIMARY KEY (`idMatiere`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Déchargement des données de la table `matiere`
@@ -138,7 +138,7 @@ CREATE TABLE IF NOT EXISTS `promotion` (
   `nomPromotion` varchar(50) DEFAULT NULL,
   `annee` int DEFAULT NULL,
   PRIMARY KEY (`idPromotion`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Déchargement des données de la table `promotion`
