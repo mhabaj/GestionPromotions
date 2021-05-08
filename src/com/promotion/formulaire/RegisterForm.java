@@ -68,7 +68,7 @@ public class RegisterForm {
         }   
         etudiant.setNom(nom);
         
-        /*Validation du champ prénom*/
+        /*Validation du champ prenom*/
         try {
         	validateSurname(prenom);
         }catch(Exception e) {
@@ -76,7 +76,7 @@ public class RegisterForm {
         }
         etudiant.setPrenom(prenom);
         
-        /*Validation de la promo de l'étudiant*/
+        /*Validation de la promo de l'etudiant*/
         try {
         	if(DaoEtudiant.promotionExists(promotion)) {
         		etudiant.setNomPromotion(promotion);
@@ -90,17 +90,17 @@ public class RegisterForm {
         	setErreur(CHAMP_PROMOTION, e.getMessage());
         }
         
-        /*Vérification du checkbox admin*/
+        /*Verification du checkbox admin*/
         if(admin == null) {
         	etudiant.setAdmin(false);
         }else {
         	etudiant.setAdmin(true);
         }
         
-        /* Initialisation du résultat global de la validation. */
+        /* Initialisation du resultat global de la validation. */
         if ( erreurs.isEmpty() ) {
-            resultat = "Succès de l'inscription.";
-            //créer l'étudiant dans la base de données
+            resultat = "Succes de l'inscription.";
+            //creer l'etudiant dans la base de donnees
             DaoEtudiant.creerEtudiant(etudiant);
         } else {
         	setErreur(CHAMP_PASS, "Mot de passe invalide");
@@ -120,9 +120,9 @@ public class RegisterForm {
 	
 	private void validateSurname( String prenom ) throws Exception {
         if ( prenom != null && prenom.length() < 3 ) {
-            throw new Exception( "Le prénom de l'étudiant doit contenir au moins 3 caractères." );
+            throw new Exception( "Le prenom de l'etudiant doit contenir au moins 3 caracteres." );
         } else if ( prenom == null ) {
-            throw new Exception( "Le prénom de l'étudiant doit contenir au moins 3 caractères." );
+            throw new Exception( "Le prenom de l'etudiant doit contenir au moins 3 caracteres." );
         }
     }
 	
@@ -139,9 +139,9 @@ public class RegisterForm {
 	private void validatePassword(String motDePasse, String confirmation) throws Exception{
 		if ( motDePasse != null && confirmation != null ) {
             if ( !motDePasse.equals( confirmation ) ) {
-                throw new Exception( "Les mots de passe entrés sont différents, merci de les saisir à  nouveau." );
+                throw new Exception( "Les mots de passe entres sont differents, merci de les saisir de nouveau." );
             } else if ( motDePasse.length() < 3 ) {
-                throw new Exception( "Les mots de passe doivent contenir au moins 3 caractères." );
+                throw new Exception( "Les mots de passe doivent contenir au moins 3 caracteres." );
             }
         } else {
             throw new Exception( "Merci de saisir et confirmer votre mot de passe." );
@@ -150,9 +150,9 @@ public class RegisterForm {
 	
 	private void validateName( String nom ) throws Exception {
         if ( nom != null && nom.length() < 3 ) {
-            throw new Exception( "Le nom de l'étudiant doit contenir au moins 3 caractères." );
+            throw new Exception( "Le nom de l'etudiant doit contenir au moins 3 caracteres." );
         } else if ( nom == null ) {
-            throw new Exception( "Le nom de l'étudiant doit contenir au moins 3 caractères." );
+            throw new Exception( "Le nom de l'etudiant doit contenir au moins 3 caracteres." );
         }
     }
 }

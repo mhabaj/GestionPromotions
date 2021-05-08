@@ -90,7 +90,7 @@ public class ConnectForm {
 	private void validatePassword(String motDePasse) throws Exception {
 		if (motDePasse != null) {
 			if (motDePasse.length() < 3) {
-				throw new Exception("Le mot de passe doit contenir au moins 3 caractÃ¨res.");
+				throw new Exception("Le mot de passe doit contenir au moins 3 caracteres.");
 			}
 		} else {
 			throw new Exception("Merci de saisir votre mot de passe.");
@@ -100,8 +100,8 @@ public class ConnectForm {
 	private void validateEmail(String email) throws Exception {
 		if (email != null && !email.matches("([^.@]+)(\\.[^.@]+)*@([^.@]+\\.)+([^.@]+)")) {
 			throw new Exception("Merci de saisir une adresse mail valide.");
-		} else if (DaoEtudiant.emailExistsInDatabase(email) == false) { // vérifier que l'email existe bien dans la
-																		// base de données
+		} else if (DaoEtudiant.emailExistsInDatabase(email) == false) { // verifier que l'email existe bien dans la
+																		// base de donnees
 			throw new Exception("Email introuvable.");
 		}
 	}
