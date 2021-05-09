@@ -6,7 +6,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import com.promotion.bean.EtudiantBean;
-import com.promotion.bean.NoteBean;
 import com.promotion.dao.DaoEtudiant;
 
 public class ConnectForm {
