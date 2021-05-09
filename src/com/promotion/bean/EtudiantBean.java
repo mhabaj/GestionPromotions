@@ -1,5 +1,6 @@
 package com.promotion.bean;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 /**
@@ -7,8 +8,12 @@ import java.util.ArrayList;
  * @author Sean Anica & Alhabaj Mahmod & Rondeau Juliette
  *
  */
-public class EtudiantBean {
+public class EtudiantBean implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2009106718895075183L;
 	private int id;
 	private String nom;
 	private String prenom;
