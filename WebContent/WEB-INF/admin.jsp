@@ -85,13 +85,13 @@
                 <span class="erreur">${form.erreurs['coefficientMatiere']}</span>
                 <br />
                 
-                <label for="nomPromotion">promotion</label>
-                <select form="creerMatiereForm" id="nomPromotion" name="nomPromotion"> 
+                <label for="nomPromotionMatiere">promotion</label>
+                <select form="creerMatiereForm" id="nomPromotionMatiere" name="nomPromotionMatiere"> 
                 <c:forEach items="${sessionScope.promotions}" var="listItem">
 						<option value = "${listItem.nomPromotion}">${listItem.nomPromotion} </option>
 				</c:forEach>
                 </select>                
-                <span class="erreur">${form.erreurs['nomPromotion']}</span>
+                <span class="erreur">${form.erreurs['nomPromotionMatiere']}</span>
                 <br />
                 
                 <input type="submit" value="creer une matière" class="sansLabel" />

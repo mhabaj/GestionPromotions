@@ -296,6 +296,7 @@ public class DaoEtudiant extends DaoGenerator {
 						promo.setNomPromotion(resultSet.getString(2));
 						promo.setAnnee(resultSet.getInt(3));
 						promo.setEtudiants(getEtudiantsFromPromotion(resultSet.getInt(1)));
+						promo.setMoyenneGeneralePromo(calculeMoyenneGeneralePromo(promo));
 						listPromotions.add(promo);
 					}
 				}

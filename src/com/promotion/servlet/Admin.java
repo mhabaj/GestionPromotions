@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.promotion.dao.DaoEtudiant;
 import com.promotion.dao.DaoGenerator;
 
 /**
@@ -20,13 +19,16 @@ public class Admin extends HttpServlet {
 	 * 
 	 */
 	private static final long serialVersionUID = 1002918475188212581L;
-
     
     @Override
 	public void init() throws ServletException {
 		DaoGenerator.init(this.getServletContext());
-		this.getServletContext().setAttribute( "promos", DaoEtudiant.getAllPromotions());
 	}
+    
+    public Admin() {
+    	super();
+    	
+    }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)

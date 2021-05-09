@@ -31,17 +31,10 @@ public class CreerMatiere extends HttpServlet {
     }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.getWriter().append("Served at: ").append(request.getContextPath());
-	}
-
-	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
+		//doGet(request, response);
 		
 		/* Préparation de l'objet formulaire */
 		CreerMatiereForm form = new CreerMatiereForm();
@@ -54,9 +47,7 @@ public class CreerMatiere extends HttpServlet {
 		MatiereBean matiere = form.createMatiere(request);
 		/* Stockage du formulaire et du bean dans l'objet request */
 		request.setAttribute(ATT_FORM, form);
-		if (form.getErreurs().isEmpty())
-			this.getServletContext().getRequestDispatcher(ADMIN_VUE).forward(request, response);
-		
+		this.getServletContext().getRequestDispatcher(ADMIN_VUE).forward(request, response);	
 	}
 
 }

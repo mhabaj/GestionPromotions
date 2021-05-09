@@ -26,7 +26,7 @@ public class ConnectForm {
 		erreurs.clear();
 	}
 
-	public EtudiantBean ConnectUSer(HttpServletRequest request) {
+	public EtudiantBean connectUser(HttpServletRequest request) {
 		// Récupération des champs du formulaire
 		String email = getValueField(request, CHAMP_EMAIL);
 		String motDePasse = getValueField(request, CHAMP_PASS);

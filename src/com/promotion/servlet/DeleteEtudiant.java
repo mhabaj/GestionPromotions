@@ -6,7 +6,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import com.promotion.dao.DaoEtudiant;
 
 /**
@@ -32,8 +31,8 @@ public class DeleteEtudiant extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		DaoEtudiant.deleteEtudiant(Integer.parseInt(request.getParameter("etudiantId")));	
-		HttpSession session = request.getSession();
-		session.setAttribute("etudiants", DaoEtudiant.getAllNonAdminEtudiants());
+		request.getSession().setAttribute( "promotions", DaoEtudiant.getAllPromotions());
+		request.getSession().setAttribute( "etudiants", DaoEtudiant.getAllNonAdminEtudiants());
 		this.getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp").forward(request, response);
 	}
 

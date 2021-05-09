@@ -31,18 +31,9 @@ public class CreerPromotion extends HttpServlet {
     }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.getWriter().append("Served at: ").append(request.getContextPath());
-	}
-
-	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
-		
 		/* Préparation de l'objet formulaire */
 		CreerPromotionForm form = new CreerPromotionForm();
 
@@ -54,9 +45,7 @@ public class CreerPromotion extends HttpServlet {
 		PromotionBean promotion = form.createPromotion(request);
 		/* Stockage du formulaire et du bean dans l'objet request */
 		request.setAttribute(ATT_FORM, form);
-		if (form.getErreurs().isEmpty())
-			this.getServletContext().getRequestDispatcher(ADMIN_VUE).forward(request, response);
-		
+		this.getServletContext().getRequestDispatcher(ADMIN_VUE).forward(request, response);
 	}
 
 }

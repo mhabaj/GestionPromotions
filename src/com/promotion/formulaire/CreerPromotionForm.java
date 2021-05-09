@@ -1,6 +1,5 @@
 package com.promotion.formulaire;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,42 +23,43 @@ public class CreerPromotionForm {
         return erreurs;
     }
     
-    private void setErreur( String champ, String message ) {
+    private void setErreurs( String champ, String message ) {
         erreurs.put( champ, message );
     }
 
 	public PromotionBean createPromotion(HttpServletRequest request) {
-		
 		PromotionBean promotion = new PromotionBean();
-		String nomPromotion = getValueField(request, NOM_PROMOTION);
-		String annee = getValueField(request, ANNEE);
-		
-		promotion.setNomPromotion(nomPromotion);
-		promotion.setAnnee(Integer.parseInt(annee));
-		
-		if(erreurs.isEmpty()) {
-			DaoEtudiant.creerPromotion(promotion);
-			ArrayList<PromotionBean> promos = DaoEtudiant.getAllPromotions();
-			for(PromotionBean currentPromo: promos) {
-				currentPromo.setMoyenneGeneralePromo(
-						DaoEtudiant.calculeMoyenneGeneralePromo(currentPromo));
-			}
-			request.getSession().setAttribute("promotions", promos);
-		} else {
+		String nomPromotion;
+		try {
+			nomPromotion = getValueField(request, NOM_PROMOTION);
+			promotion.setNomPromotion(nomPromotion);
+		} catch (Exception e) {
+			setErreurs(NOM_PROMOTION, e.getMessage());
+			return null;
+		}
+		String annee;
+		try {
+			annee = getValueField(request, ANNEE);
+			promotion.setAnnee(Integer.parseInt(annee));
+		} catch (Exception e) {
+			setErreurs(ANNEE, e.getMessage());
 			return null;
 		}
 		
-
+		if(erreurs.isEmpty()) {
+			DaoEtudiant.creerPromotion(promotion);
+			request.getSession().setAttribute( "promotions", DaoEtudiant.getAllPromotions());
+			request.getSession().setAttribute( "etudiants", DaoEtudiant.getAllNonAdminEtudiants());
+		} else {
+			return null;
+		}
 		return promotion;
 	}
 	
-	
-	private String getValueField(HttpServletRequest request, String field) {
+	private String getValueField(HttpServletRequest request, String field) throws Exception {
 		String value = request.getParameter( field );
         if ( value == null || value.trim().length() == 0 ) {
-        	setErreur(NOM_PROMOTION, "erreur de saisie nom promotion");
-        	setErreur(ANNEE, "erreur de saisie de l'année");
-            return null;
+        	throw new Exception("champ invalide");
         } else {
             return value.trim();
         }
