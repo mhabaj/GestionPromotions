@@ -9,6 +9,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,13 +27,13 @@ public class DaoEtudiant extends DaoGenerator {
 				preparedStatement.setString(4, etudiant.getNom());
 				preparedStatement.setBoolean(1, etudiant.getAdmin());
 				preparedStatement.setString(5, etudiant.getPrenom());
-				preparedStatement.setInt(6, getIdPromotion(etudiant.getNomPromotion()));
+				preparedStatement.setInt(6, getIdPromotionFromNomPromotion(etudiant.getNomPromotion()));
 
 				preparedStatement.executeUpdate();
 ///////////////////////////////////////////////////////
 				//////////////////////////////////////
 
-				PromotionBean promo = getPromotionById(getIdPromotion(etudiant.getNomPromotion()));
+				PromotionBean promo = getPromotionById(getIdPromotionFromNomPromotion(etudiant.getNomPromotion()));
 
 				for (MatiereBean currentMatiere : promo.getMatieres()) {
 					Random r = new Random();
@@ -366,7 +368,7 @@ public class DaoEtudiant extends DaoGenerator {
 		return anneeDeLaPromotion;
 	}
 
-	public static int getIdPromotion(String promotion) {
+	public static int getIdPromotionFromNomPromotion(String promotion) {
 		int idPromotion = 0;
 		try (Connection con = DriverManager.getConnection(dbURL, dbLogin, dbPassword)) {
 			String selectQuery = "SELECT * FROM Promotion WHERE nomPromotion=?";
@@ -496,6 +498,46 @@ public class DaoEtudiant extends DaoGenerator {
 			throw new RuntimeException(e);
 		}
 		return anneePromotion;
+	}
+
+	public static void creerMatiere(MatiereBean matiere, String nomPromotion) {
+		int idPromotion = getIdPromotionFromNomPromotion(nomPromotion);
+		try (Connection con = DriverManager.getConnection(dbURL, dbLogin, dbPassword)) {
+			
+			String insertQuery = "INSERT INTO `matiere` (`idMatiere`, `nomMatiere`, `coefficientMatiere`) VALUES (NULL, ?, ?);";
+			try (PreparedStatement preparedStatement = con.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS)) {
+				preparedStatement.setString(1, matiere.getNomMatiere());
+				preparedStatement.setDouble(2, matiere.getCoefficientMatiere());
+				int affectedRows = preparedStatement.executeUpdate();
+
+				if(affectedRows == 0) {
+					throw new SQLException("Création matière non réussie.");
+				}
+				try(ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+					if(generatedKeys.next()) {
+						int lastInsertedId = (int) generatedKeys.getLong(affectedRows);
+						linkMatiereToPromotion(lastInsertedId, idPromotion);
+					}else {
+						throw new SQLException("idMatiere invalide.");
+					}
+				}
+			}
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	public static void linkMatiereToPromotion(int idMatiere, int idPromotion) {
+		try (Connection con = DriverManager.getConnection(dbURL, dbLogin, dbPassword)) {
+			String insertQuery = "INSERT INTO Comprend ( idMatiere, idPromotion) VALUES (?, ?)";
+			try (PreparedStatement preparedStatement = con.prepareStatement(insertQuery)) {
+				preparedStatement.setInt(1, idMatiere);
+				preparedStatement.setInt(2, idPromotion);
+				preparedStatement.executeUpdate();
+			}
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 }

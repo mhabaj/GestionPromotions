@@ -22,8 +22,7 @@
 				name="motdepasse" value="" size="20" maxlength="20" /> <span
 				class="erreur">${form.erreurs['motdepasse']}</span> <br /> <input
 				type="submit" value="Connexion" class="sansLabel" /> <br />
-
-			<p class="${empty form.erreurs ? 'success' : 'erreur'}">${form.resultat}</p>
+				
 			<%-- Vérification de la présence d'un objet utilisateur en session --%>
 			<c:if test="${!empty sessionScope.sessionEtudiant}">
 				<%-- Si l'utilisateur existe en session, alors on affiche son adresse email. --%>

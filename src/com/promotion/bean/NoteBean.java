@@ -1,7 +1,13 @@
 package com.promotion.bean;
 
-public class NoteBean {
+import java.io.Serializable;
 
+public class NoteBean implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6833254614925218485L;
 	private long idNote;
 	private MatiereBean matiere;
 	private Double note;

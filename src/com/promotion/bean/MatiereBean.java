@@ -1,7 +1,13 @@
 package com.promotion.bean;
 
-public class MatiereBean {
+import java.io.Serializable;
 
+public class MatiereBean implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5914553338072416517L;
 	private int id;
 	private String nomMatiere;
 	private Double coefficientMatiere;
