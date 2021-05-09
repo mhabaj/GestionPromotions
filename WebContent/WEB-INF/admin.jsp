@@ -10,8 +10,7 @@
 <body>
 <p>Moyenne generale par promotion: </p>
 
-
-<table border="1">
+	<table border="1">
 		<tr>
 			<th>Nom de la promotion</th>
 			<th>Moyenne Générale</th>
