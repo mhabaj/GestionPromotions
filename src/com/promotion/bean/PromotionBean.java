@@ -1,8 +1,13 @@
 package com.promotion.bean;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class PromotionBean {
+public class PromotionBean implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 987883375310610908L;
 	private String nomPromotion;
 	private int annee;
 	private double moyenneGeneralePromo;

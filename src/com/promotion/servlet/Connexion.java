@@ -28,7 +28,7 @@ public class Connexion extends HttpServlet {
 	public static final String ATT_SESSION_USER = "sessionEtudiant";
 	public static final String ATT_USERS = "etudiants";
 	public static final String ATT_PROMOS = "promotions";
-	public static final String VUE = "/WEB-INF/connexion.jsp";
+	public static final String VUE_CONNEXION = "/WEB-INF/connexion.jsp";
 	private static final String ADMIN = "/WEB-INF/admin.jsp";
 	private static final String USER = "/WEB-INF/etudiant.jsp";
 	private static final String NOTES = "notes";
@@ -40,7 +40,7 @@ public class Connexion extends HttpServlet {
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		/* Affichage de la page de connexion */
-		this.getServletContext().getRequestDispatcher(VUE).forward(request, response);
+		this.getServletContext().getRequestDispatcher(VUE_CONNEXION).forward(request, response);
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -48,7 +48,7 @@ public class Connexion extends HttpServlet {
 		ConnectForm form = new ConnectForm();
 
 		/* Traitement de la requête et récupération du bean en résultant */
-		EtudiantBean etudiant = form.ConnectUSer(request);
+		EtudiantBean etudiant = form.connectUser(request);
 		ArrayList<PromotionBean> promos = DaoEtudiant.getAllPromotions();
 		for(PromotionBean currentPromo: promos) {
 			currentPromo.setMoyenneGeneralePromo(
@@ -86,7 +86,7 @@ public class Connexion extends HttpServlet {
 			}
 
 		} else {
-			this.getServletContext().getRequestDispatcher(VUE).forward(request, response);
+			this.getServletContext().getRequestDispatcher(VUE_CONNEXION).forward(request, response);
 		}
 
 	}

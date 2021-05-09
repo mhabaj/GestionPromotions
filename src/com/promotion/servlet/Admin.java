@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.promotion.dao.DaoGenerator;
+
 /**
  * Servlet implementation class Admin
  */
@@ -17,12 +19,15 @@ public class Admin extends HttpServlet {
 	 * 
 	 */
 	private static final long serialVersionUID = 1002918475188212581L;
-
-	/**
-     * @see HttpServlet#HttpServlet()
-     */
+    
+    @Override
+	public void init() throws ServletException {
+		DaoGenerator.init(this.getServletContext());
+	}
+    
     public Admin() {
-        super();
+    	super();
+    	
     }
 
 	/**
