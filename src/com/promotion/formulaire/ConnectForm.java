@@ -67,9 +67,8 @@ public class ConnectForm {
 			etudiant.setAnnee(DaoEtudiant.getAnneePromotionFromNomPromotion(etudiant.getNomPromotion()));
 
 			// calculer la moyenne generale
-
 			etudiant.setMoyenneGenerale(DaoEtudiant.calculeMoyenneGeneraleEtudiant(email));
-			// System.out.println(etudiant);
+			// System.out.println(etudiant); //faire afficher les infos de l'étudiant qui se connecte pour les tests
 		} else {
 			setErreur(CHAMP_PASS, "Mot de passe invalide");
 			return null;
