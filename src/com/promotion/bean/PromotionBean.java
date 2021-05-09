@@ -3,7 +3,11 @@ package com.promotion.bean;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+<<<<<<< HEAD
 public class PromotionBean implements Serializable{
+=======
+public class PromotionBean implements Serializable {
+>>>>>>> sean
 	/**
 	 * 
 	 */

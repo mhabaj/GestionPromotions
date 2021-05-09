@@ -6,29 +6,27 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import com.promotion.bean.EtudiantBean;
-import com.promotion.bean.NoteBean;
 import com.promotion.dao.DaoEtudiant;
 
 public class ConnectForm {
 	private static final String CHAMP_EMAIL = "email";
 	private static final String CHAMP_PASS = "motdepasse";
 
-	private String resultat;
+	
 	private Map<String, String> erreurs = new HashMap<String, String>();
-
-	public String getResultat() {
-		return resultat;
-	}
 
 	public Map<String, String> getErreurs() {
 		return erreurs;
 	}
 
-	private void setErreur(String champ, String message) {
+	public void setErreurs(String champ, String message) {
 		erreurs.put(champ, message);
 	}
+	public void clearErreurs() {
+		erreurs.clear();
+	}
 
-	public EtudiantBean ConnectUSer(HttpServletRequest request) {
+	public EtudiantBean connectUser(HttpServletRequest request) {
 		// Récupération des champs du formulaire
 		String email = getValueField(request, CHAMP_EMAIL);
 		String motDePasse = getValueField(request, CHAMP_PASS);
@@ -38,7 +36,7 @@ public class ConnectForm {
 		try {
 			validateEmail(email);
 		} catch (Exception e) {
-			setErreur(CHAMP_EMAIL, e.getMessage());
+			setErreurs(CHAMP_EMAIL, e.getMessage());
 		}
 		etudiant.setEmail(email);
 
@@ -46,13 +44,12 @@ public class ConnectForm {
 		try {
 			validatePassword(motDePasse);
 		} catch (Exception e) {
-			setErreur(CHAMP_PASS, e.getMessage());
+			setErreurs(CHAMP_PASS, e.getMessage());
 		}
 		etudiant.setMotDePasse(motDePasse);
 
 		// générer le résultat de la validation
 		if (erreurs.isEmpty() && DaoEtudiant.loginExistsInDatabase(email, motDePasse)) {
-			resultat = "succès de la connexion.";
 
 			if (etudiant != null) {
 				etudiant.setAdmin(DaoEtudiant.etudiantIsAdmin(etudiant));
@@ -68,13 +65,13 @@ public class ConnectForm {
 			etudiant.setAnnee(DaoEtudiant.getAnneePromotionFromNomPromotion(etudiant.getNomPromotion()));
 
 			// calculer la moyenne generale
-
 			etudiant.setMoyenneGenerale(DaoEtudiant.calculeMoyenneGeneraleEtudiant(email));
-			// System.out.println(etudiant);
+			// System.out.println(etudiant); //faire afficher les infos de l'étudiant qui se connecte pour les tests
 		} else {
-			setErreur(CHAMP_PASS, "Mot de passe invalide");
+			setErreurs(CHAMP_PASS, "Mot de passe invalide");
 			return null;
 		}
+		clearErreurs();
 		return etudiant;
 	}
 

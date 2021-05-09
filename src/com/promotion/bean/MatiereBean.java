@@ -2,7 +2,11 @@ package com.promotion.bean;
 
 import java.io.Serializable;
 
+<<<<<<< HEAD
 public class MatiereBean implements Serializable{
+=======
+public class MatiereBean implements Serializable {
+>>>>>>> sean
 
 	/**
 	 * 
