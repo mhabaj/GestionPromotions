@@ -16,8 +16,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * classe DATA ACCESS OBJECT qui contiennent les fonctions qui interragissent avec la bdd pour remplir les beans.
+ * @author Sean, Juliette & Mahmod
+ *
+ */
 public class DaoEtudiant extends DaoGenerator {
 
+	/**
+	 * fonction permettant d'inserer un etudiant dans la base de donnees
+	 * @param etudiant
+	 */
 	public static void creerEtudiant(EtudiantBean etudiant) {
 		try (Connection con = DriverManager.getConnection(dbURL, dbLogin, dbPassword)) {
 			String insertQuery = "INSERT INTO Etudiant (admin, email, mot_de_passe, nom, prenom, date_inscription , idPromotion) VALUES (?, ?, ?, ?, ?, NOW() ,?)";
@@ -31,7 +40,7 @@ public class DaoEtudiant extends DaoGenerator {
 
 				preparedStatement.executeUpdate();
 ///////////////////////////////////////////////////////
-				//////////////////////////////////////
+				////////////////////////////////////// pour chaque etudiant cree on lui insere des notes generees au hasard dans toutes les matieres de la promo.
 
 				PromotionBean promo = getPromotionById(getIdPromotionFromNomPromotion(etudiant.getNomPromotion()));
 
@@ -49,8 +58,6 @@ public class DaoEtudiant extends DaoGenerator {
 						preparedStatement2.executeUpdate();
 
 					}
-///////////////////////////////////////////////////////
-//////////////////////////////////////
 				}
 			}
 		} catch (Exception e) {
@@ -58,6 +65,11 @@ public class DaoEtudiant extends DaoGenerator {
 		}
 	}
 
+	/**
+	 * fonction permettant d'obtenir une promotion en fonction de son id
+	 * @param promotionId
+	 * @return promotionBean
+	 */
 	public static PromotionBean getPromotionById(int promotionId) {
 		PromotionBean promo = new PromotionBean();
 
@@ -82,11 +94,11 @@ public class DaoEtudiant extends DaoGenerator {
 
 	}
 	
-	
-
-	
-	
-
+	/**
+	 * obtenir la liste de MatiereBean en fonction de l'id de la promotion
+	 * @param promotionId
+	 * @return matieres
+	 */
 	public static ArrayList<MatiereBean> getMatieresFromPromotionId(int promotionId) {
 ///////////////////////////
 		//////////////////////////
@@ -112,6 +124,11 @@ public class DaoEtudiant extends DaoGenerator {
 		return matieres;
 	}
 
+	/**
+	 * obtenir la liste des EtudiantBean en fonction de l'id de leur promotion
+	 * @param idPromotion
+	 * @return listeDesEtudiants
+	 */
 	public static ArrayList<EtudiantBean> getEtudiantsFromPromotion(int idPromotion) {
 		ArrayList<EtudiantBean> listeDesEtudiants = new ArrayList<EtudiantBean>();
 		try (Connection con = DriverManager.getConnection(dbURL, dbLogin, dbPassword)) {
@@ -140,6 +157,11 @@ public class DaoEtudiant extends DaoGenerator {
 		return listeDesEtudiants;
 	}
 
+	/**
+	 * permet de calculer la moyenne generale de l'etudiant identifie par son adresse mail.
+	 * @param email
+	 * @return moyenne
+	 */
 	public static double calculeMoyenneGeneraleEtudiant(String email) {
 		EtudiantBean etudiant = getEtudiant(email);
 		ArrayList<NoteBean> ListeNotesEtudiant = getNotesEtudiant((int) etudiant.getId());
@@ -156,8 +178,11 @@ public class DaoEtudiant extends DaoGenerator {
 		return Math.round(moyenne * 100.0) / 100.0;
 	}
 
-
-
+	/**
+	 * verifier si le login (l'email) existe dans la base de donnees
+	 * @param login
+	 * @return true || false
+	 */
 	public static boolean emailExistsInDatabase(String login) {
 		try (Connection connection = DriverManager.getConnection(dbURL, dbLogin, dbPassword)) {
 
@@ -177,6 +202,11 @@ public class DaoEtudiant extends DaoGenerator {
 		}
 	}
 
+	/**
+	 * obtenir un etudiant en fonction de son adresse mail
+	 * @param email
+	 * @return etudiantRecherche
+	 */
 	public static EtudiantBean getEtudiant(String email) {
 		EtudiantBean etudiantRecherche = new EtudiantBean();
 		try (Connection con = DriverManager.getConnection(dbURL, dbLogin, dbPassword)) {
@@ -206,6 +236,12 @@ public class DaoEtudiant extends DaoGenerator {
 		return etudiantRecherche;
 	}
 
+	/**
+	 * 
+	 * @param login
+	 * @param motDePasse
+	 * @return
+	 */
 	public static boolean loginExistsInDatabase(String login, String motDePasse) {
 		try (Connection con = DriverManager.getConnection(dbURL, dbLogin, dbPassword)) {
 			String selectQuery = "SELECT * FROM Etudiant WHERE email=? AND mot_de_passe=?";
