@@ -30,6 +30,11 @@ public class CreerMatiereForm {
         erreurs.put( champ, message );
     }
 
+    /**
+     * créer une matiere et l'ajouter dans la base de données à partir des champs du formulaire correspondant.
+     * @param request
+     * @return matiere
+     */
 	public MatiereBean createMatiere(HttpServletRequest request) {
 		
 		MatiereBean matiere = new MatiereBean();
@@ -61,6 +66,7 @@ public class CreerMatiereForm {
 			try {
 				DaoEtudiant.creerMatiere(matiere, nomPromotion);
 				
+				/*on ajoute des étudiants et leurs notes générées au hasard dans la base de données, ces étudiants seront liés à la matiere ajoutée*/
 				int numeroRandom = (int) (Math.random() * 100000-5+1);
 				
 				EtudiantBean etudiant1 = new EtudiantBean();
@@ -108,7 +114,13 @@ public class CreerMatiereForm {
 		return matiere;
 	}
 	
-	
+	/**
+	 * obtenir les valeurs des champs du formulaire correspondant
+	 * @param request
+	 * @param field
+	 * @return value
+	 * @throws Exception
+	 */
 	private String getValueField(HttpServletRequest request, String field) throws Exception {
 		String value = request.getParameter( field );
         if ( value == null || value.trim().length() == 0 ) {

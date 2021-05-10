@@ -27,6 +27,11 @@ public class CreerPromotionForm {
         erreurs.put( champ, message );
     }
 
+    /**
+     * créer une promotion en fonction des valeurs récupérées dans les champs du formulaire
+     * @param request
+     * @return promotion
+     */
 	public PromotionBean createPromotion(HttpServletRequest request) {
 		PromotionBean promotion = new PromotionBean();
 		String nomPromotion;
@@ -56,6 +61,13 @@ public class CreerPromotionForm {
 		return promotion;
 	}
 	
+	/**
+	 * obtenir les valeurs des champs du formulaire correspondant
+	 * @param request
+	 * @param field
+	 * @return value
+	 * @throws Exception
+	 */
 	private String getValueField(HttpServletRequest request, String field) throws Exception {
 		String value = request.getParameter( field );
         if ( value == null || value.trim().length() == 0 ) {

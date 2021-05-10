@@ -109,6 +109,12 @@ public class RegisterForm {
 		return etudiant;
     }
 
+    /**
+     * fonction qui permet d'obtenir les champs du formulaire. 
+     * @param request
+     * @param field
+     * @return value
+     */
     private String getValueField(HttpServletRequest request, String field) {
 		String value = request.getParameter( field );
         if ( value == null || value.trim().length() == 0 ) {
@@ -118,6 +124,13 @@ public class RegisterForm {
         }
 	}
 	
+   /***************************fonctions permettant de valider les valeurs des champs*****************************/
+    
+    /**
+     * vérifier la validité du prénom
+     * @param prenom
+     * @throws Exception
+     */
 	private void validateSurname( String prenom ) throws Exception {
         if ( prenom != null && prenom.length() < 3 ) {
             throw new Exception( "Le prénom de l'étudiant doit contenir au moins 3 caractères." );
@@ -126,6 +139,11 @@ public class RegisterForm {
         }
     }
 	
+	/**
+	 * vérifier la validité de l'email
+	 * @param email
+	 * @throws Exception
+	 */
 	private void validateEmail(String email) throws Exception{
 		if ( email != null && email.trim().length() != 0 ) {
 	        if ( !email.matches( "([^.@]+)(\\.[^.@]+)*@([^.@]+\\.)+([^.@]+)" ) ) {
@@ -136,6 +154,12 @@ public class RegisterForm {
 	    }
 	}
 	
+	/**
+	 * vérifier la validité du mot de passe
+	 * @param motDePasse
+	 * @param confirmation
+	 * @throws Exception
+	 */
 	private void validatePassword(String motDePasse, String confirmation) throws Exception{
 		if ( motDePasse != null && confirmation != null ) {
             if ( !motDePasse.equals( confirmation ) ) {
@@ -148,6 +172,11 @@ public class RegisterForm {
         }
 	}
 	
+	/**
+	 * vérifier la validité du nom
+	 * @param nom
+	 * @throws Exception
+	 */
 	private void validateName( String nom ) throws Exception {
         if ( nom != null && nom.length() < 3 ) {
             throw new Exception( "Le nom de l'étudiant doit contenir au moins 3 caractères." );

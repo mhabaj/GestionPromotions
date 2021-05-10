@@ -13,6 +13,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+/**
+ * classe contenant les actions du filtre 
+ * @author Sean, Juliette et Mahmod
+ *
+ */
 @WebFilter(urlPatterns = { "/etudiant", "/admin" })
 public class LogFilter implements Filter {
 	@Override
@@ -35,13 +40,11 @@ public class LogFilter implements Filter {
 
 	@Override
 	public void destroy() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void init(FilterConfig arg0) throws ServletException {
-		// TODO Auto-generated method stub
 
 	}
 }
