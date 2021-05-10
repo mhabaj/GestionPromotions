@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.2
+-- version 4.7.0
 -- https://www.phpmyadmin.net/
 --
--- Hôte : 127.0.0.1:3306
--- Généré le : jeu. 06 mai 2021 à 21:03
--- Version du serveur :  8.0.21
--- Version de PHP : 7.3.21
+-- Hôte : 127.0.0.1
+-- Généré le :  sam. 08 mai 2021 à 03:36
+-- Version du serveur :  5.7.17
+-- Version de PHP :  5.6.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -18,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données : `jeetp1`
+-- Base de données :  `jeetp1`
 --
 
 -- --------------------------------------------------------
@@ -27,12 +28,9 @@ SET time_zone = "+00:00";
 -- Structure de la table `comprend`
 --
 
-DROP TABLE IF EXISTS `comprend`;
-CREATE TABLE IF NOT EXISTS `comprend` (
-  `idMatiere` int NOT NULL,
-  `idPromotion` int NOT NULL,
-  PRIMARY KEY (`idMatiere`,`idPromotion`),
-  KEY `comprend_Promotion0_FK` (`idPromotion`)
+CREATE TABLE `comprend` (
+  `idMatiere` int(11) NOT NULL,
+  `idPromotion` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -50,19 +48,16 @@ INSERT INTO `comprend` (`idMatiere`, `idPromotion`) VALUES
 -- Structure de la table `etudiant`
 --
 
-DROP TABLE IF EXISTS `etudiant`;
-CREATE TABLE IF NOT EXISTS `etudiant` (
-  `idEtudiant` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `etudiant` (
+  `idEtudiant` int(11) NOT NULL,
   `admin` tinyint(1) NOT NULL,
   `email` varchar(50) NOT NULL,
   `mot_de_passe` varchar(50) NOT NULL,
   `nom` varchar(50) NOT NULL,
   `prenom` varchar(50) NOT NULL,
   `date_inscription` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `idPromotion` int DEFAULT NULL,
-  PRIMARY KEY (`idEtudiant`),
-  KEY `Etudiant_Promotion_FK` (`idPromotion`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4;
+  `idPromotion` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Déchargement des données de la table `etudiant`
@@ -70,8 +65,10 @@ CREATE TABLE IF NOT EXISTS `etudiant` (
 
 INSERT INTO `etudiant` (`idEtudiant`, `admin`, `email`, `mot_de_passe`, `nom`, `prenom`, `date_inscription`, `idPromotion`) VALUES
 (1, 1, 'admin@gmail.com', '123', 'admin', 'admin', '2021-05-20 14:32:33', NULL),
-(14, 0, 'etu3@gmail.com', '123', 'etu3', 'etu3', '2021-05-06 15:48:24', 1),
-(15, 0, 'etu5@gmail.com', '123', 'aze', 'aze', '2021-05-06 17:51:00', 1);
+(14, 0, 'etu3@gmail.com', 'mdp', 'dupont', 'nicolas', '2021-05-08 00:00:00', 1),
+(17, 0, 'etu5@gmail.com', 'mdp', 'garnier', 'thomas', '2021-05-08 01:05:30', 1),
+(20, 0, 'etu6@gmail.com', 'mdp', 'meunier', 'lucas', '2021-05-08 01:28:12', 2),
+(21, 0, 'etu7@gmail.com', 'mdp', 'Durand', 'Pierre', '2021-05-08 01:31:24', 2);
 
 -- --------------------------------------------------------
 
@@ -79,16 +76,12 @@ INSERT INTO `etudiant` (`idEtudiant`, `admin`, `email`, `mot_de_passe`, `nom`, `
 -- Structure de la table `etudie`
 --
 
-DROP TABLE IF EXISTS `etudie`;
-CREATE TABLE IF NOT EXISTS `etudie` (
-  `idNote` int NOT NULL AUTO_INCREMENT,
-  `idMatiere` int NOT NULL,
-  `idEtudiant` int NOT NULL,
-  `note` double DEFAULT NULL,
-  PRIMARY KEY (`idMatiere`,`idEtudiant`,`idNote`) USING BTREE,
-  KEY `etudie_Etudiant0_FK` (`idEtudiant`),
-  KEY `idNote` (`idNote`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4;
+CREATE TABLE `etudie` (
+  `idNote` int(11) NOT NULL,
+  `idMatiere` int(11) NOT NULL,
+  `idEtudiant` int(11) NOT NULL,
+  `note` double DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Déchargement des données de la table `etudie`
@@ -97,11 +90,14 @@ CREATE TABLE IF NOT EXISTS `etudie` (
 INSERT INTO `etudie` (`idNote`, `idMatiere`, `idEtudiant`, `note`) VALUES
 (9, 1, 14, 14.29),
 (12, 1, 14, 14.27),
-(13, 1, 15, 6.82),
+(16, 1, 17, 9.89),
+(21, 1, 20, 12),
 (10, 2, 14, 16.73),
-(14, 2, 15, 16.45),
+(17, 2, 17, 6.28),
+(20, 2, 20, 15),
+(22, 2, 21, 8),
 (11, 3, 14, 17.76),
-(15, 3, 15, 1.25);
+(18, 3, 17, 4);
 
 -- --------------------------------------------------------
 
@@ -109,13 +105,11 @@ INSERT INTO `etudie` (`idNote`, `idMatiere`, `idEtudiant`, `note`) VALUES
 -- Structure de la table `matiere`
 --
 
-DROP TABLE IF EXISTS `matiere`;
-CREATE TABLE IF NOT EXISTS `matiere` (
-  `idMatiere` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `matiere` (
+  `idMatiere` int(11) NOT NULL,
   `nomMatiere` varchar(50) DEFAULT NULL,
-  `coefficientMatiere` double DEFAULT NULL,
-  PRIMARY KEY (`idMatiere`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+  `coefficientMatiere` double DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Déchargement des données de la table `matiere`
@@ -132,13 +126,11 @@ INSERT INTO `matiere` (`idMatiere`, `nomMatiere`, `coefficientMatiere`) VALUES
 -- Structure de la table `promotion`
 --
 
-DROP TABLE IF EXISTS `promotion`;
-CREATE TABLE IF NOT EXISTS `promotion` (
-  `idPromotion` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `promotion` (
+  `idPromotion` int(11) NOT NULL,
   `nomPromotion` varchar(50) DEFAULT NULL,
-  `annee` int DEFAULT NULL,
-  PRIMARY KEY (`idPromotion`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+  `annee` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Déchargement des données de la table `promotion`
@@ -148,6 +140,68 @@ INSERT INTO `promotion` (`idPromotion`, `nomPromotion`, `annee`) VALUES
 (1, 'DI4', 2021),
 (2, 'DI3', 2022);
 
+--
+-- Index pour les tables déchargées
+--
+
+--
+-- Index pour la table `comprend`
+--
+ALTER TABLE `comprend`
+  ADD PRIMARY KEY (`idMatiere`,`idPromotion`),
+  ADD KEY `comprend_Promotion0_FK` (`idPromotion`);
+
+--
+-- Index pour la table `etudiant`
+--
+ALTER TABLE `etudiant`
+  ADD PRIMARY KEY (`idEtudiant`),
+  ADD KEY `Etudiant_Promotion_FK` (`idPromotion`);
+
+--
+-- Index pour la table `etudie`
+--
+ALTER TABLE `etudie`
+  ADD PRIMARY KEY (`idMatiere`,`idEtudiant`,`idNote`) USING BTREE,
+  ADD KEY `etudie_Etudiant0_FK` (`idEtudiant`),
+  ADD KEY `idNote` (`idNote`);
+
+--
+-- Index pour la table `matiere`
+--
+ALTER TABLE `matiere`
+  ADD PRIMARY KEY (`idMatiere`);
+
+--
+-- Index pour la table `promotion`
+--
+ALTER TABLE `promotion`
+  ADD PRIMARY KEY (`idPromotion`);
+
+--
+-- AUTO_INCREMENT pour les tables déchargées
+--
+
+--
+-- AUTO_INCREMENT pour la table `etudiant`
+--
+ALTER TABLE `etudiant`
+  MODIFY `idEtudiant` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+--
+-- AUTO_INCREMENT pour la table `etudie`
+--
+ALTER TABLE `etudie`
+  MODIFY `idNote` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+--
+-- AUTO_INCREMENT pour la table `matiere`
+--
+ALTER TABLE `matiere`
+  MODIFY `idMatiere` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
+-- AUTO_INCREMENT pour la table `promotion`
+--
+ALTER TABLE `promotion`
+  MODIFY `idPromotion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- Contraintes pour les tables déchargées
 --
