@@ -237,10 +237,10 @@ public class DaoEtudiant extends DaoGenerator {
 	}
 
 	/**
-	 * 
+	 * verifier que le login (email) et le mot de passe existent dans la base de donnees
 	 * @param login
 	 * @param motDePasse
-	 * @return
+	 * @return true || false
 	 */
 	public static boolean loginExistsInDatabase(String login, String motDePasse) {
 		try (Connection con = DriverManager.getConnection(dbURL, dbLogin, dbPassword)) {
@@ -261,6 +261,11 @@ public class DaoEtudiant extends DaoGenerator {
 		}
 	}
 
+	/**
+	 * renvoie true si un etudiant est admin
+	 * @param etudiant
+	 * @return true || false
+	 */
 	public static Boolean etudiantIsAdmin(EtudiantBean etudiant) {
 		try (Connection con = DriverManager.getConnection(dbURL, dbLogin, dbPassword)) {
 
@@ -281,6 +286,10 @@ public class DaoEtudiant extends DaoGenerator {
 		}
 	}
 
+	/**
+	 * fonction permettant d'obtenir la liste des etudiants non admins
+	 * @return listeDesEtudiantsNonAdmins
+	 */
 	public static List<EtudiantBean> getAllNonAdminEtudiants() {
 		List<EtudiantBean> listeDesEtudiantsNonAdmins = new ArrayList<EtudiantBean>();
 		try (Connection con = DriverManager.getConnection(dbURL, dbLogin, dbPassword)) {
@@ -309,6 +318,11 @@ public class DaoEtudiant extends DaoGenerator {
 		return listeDesEtudiantsNonAdmins;
 	}
 
+	/**
+	 * fonction qui permet de calculer la moyenne generale d'une promotion
+	 * @param promo
+	 * @return moyenne
+	 */
 	public static double calculeMoyenneGeneralePromo(PromotionBean promo) {
 		Double moyenne = 0.0;
 		Double sommeCoeff = 0.0;
@@ -320,7 +334,10 @@ public class DaoEtudiant extends DaoGenerator {
 		return Math.round((moyenne / sommeCoeff) * 100.0) / 100.0;
 	}
 	
-	
+	/**
+	 * fonction qui permet de retourner une liste contenant toutes les promotions.
+	 * @return listPromotions
+	 */
 	public static ArrayList<PromotionBean> getAllPromotions() {
 		ArrayList<PromotionBean> listPromotions = new ArrayList<PromotionBean>();
 		try (Connection con = DriverManager.getConnection(dbURL, dbLogin, dbPassword)) {
@@ -343,6 +360,10 @@ public class DaoEtudiant extends DaoGenerator {
 		return listPromotions;
 	}
 
+	/**
+	 * fonction permettant d'insérer une promotion dans la base de données à partir d'un PromotionBean
+	 * @param promotion
+	 */
 	public static void creerPromotion(PromotionBean promotion) {
 		try (Connection con = DriverManager.getConnection(dbURL, dbLogin, dbPassword)) {
 			String insertQuery = "INSERT INTO Promotion ( nomPromotion, annee) VALUES (?, ?)";
@@ -356,6 +377,11 @@ public class DaoEtudiant extends DaoGenerator {
 		}
 	}
 
+	/**
+	 * retourne true si une promotion portant le nom de promo passé en paramètre existe dans la base de données
+	 * @param nomPromotion
+	 * @return true || false
+	 */
 	public static boolean promotionExists(String nomPromotion) {
 		try (Connection con = DriverManager.getConnection(dbURL, dbLogin, dbPassword)) {
 
@@ -375,6 +401,10 @@ public class DaoEtudiant extends DaoGenerator {
 		}
 	}
 
+	/**
+	 * fonction permettant de supprimer un etudiant de la base de donnees
+	 * @param etudiantId
+	 */
 	public static void deleteEtudiant(int etudiantId) {
 		try (Connection con = DriverManager.getConnection(dbURL, dbLogin, dbPassword)) {
 			String deleteQuery = "DELETE FROM Etudiant WHERE idEtudiant=?;";
@@ -387,6 +417,11 @@ public class DaoEtudiant extends DaoGenerator {
 		}
 	}
 
+	/**
+	 * obtenir l'annee d'obtention de diplôme d'un etudiant
+	 * @param promotion
+	 * @return anneeDeLaPromotion
+	 */
 	public static int getAnneeEtudiant(String promotion) {
 		int anneeDeLaPromotion = 0;
 		try (Connection con = DriverManager.getConnection(dbURL, dbLogin, dbPassword)) {
@@ -405,6 +440,11 @@ public class DaoEtudiant extends DaoGenerator {
 		return anneeDeLaPromotion;
 	}
 
+	/**
+	 * obtenir l'id de la promotion en fonction du nom de la promotion
+	 * @param promotion
+	 * @return idPromotion
+	 */
 	public static int getIdPromotionFromNomPromotion(String promotion) {
 		int idPromotion = 0;
 		try (Connection con = DriverManager.getConnection(dbURL, dbLogin, dbPassword)) {
@@ -423,6 +463,11 @@ public class DaoEtudiant extends DaoGenerator {
 		return idPromotion;
 	}
 
+	/**
+	 * obtenir la liste de notes de l'étudiant en fonction de son idEtudiant
+	 * @param etudiantId
+	 * @return ListeNotesEtudiant
+	 */
 	public static ArrayList<NoteBean> getNotesEtudiant(int etudiantId) {
 		ArrayList<NoteBean> ListeNotesEtudiant = new ArrayList<NoteBean>();
 		try (Connection con = DriverManager.getConnection(dbURL, dbLogin, dbPassword)) {
@@ -445,6 +490,11 @@ public class DaoEtudiant extends DaoGenerator {
 		return ListeNotesEtudiant;
 	}
 
+	/**
+	 * obtenir la matiere en fonction de son id
+	 * @param idMatiere
+	 * @return matiere
+	 */
 	public static MatiereBean getMatiereFromIdMatiere(int idMatiere) {
 		MatiereBean matiere = new MatiereBean();
 		try (Connection con = DriverManager.getConnection(dbURL, dbLogin, dbPassword)) {
@@ -465,6 +515,11 @@ public class DaoEtudiant extends DaoGenerator {
 		return matiere;
 	}
 
+	/**
+	 * obtenir l'id de l'étudiant en fonction de son adresse mail
+	 * @param email
+	 * @return idEtudiant
+	 */
 	public static int getIdEtudiant(String email) {
 		int idEtudiant = 0;
 		try (Connection con = DriverManager.getConnection(dbURL, dbLogin, dbPassword)) {
@@ -483,6 +538,11 @@ public class DaoEtudiant extends DaoGenerator {
 		return idEtudiant;
 	}
 
+	/**
+	 * obtenir l'id de la promotion de l'étudiant en fonction de l'adresse mail de l'étudiant
+	 * @param email
+	 * @return
+	 */
 	public static int getIdPromotionFromEmailEtudiant(String email) {
 		int idPromotion = 0;
 		try (Connection con = DriverManager.getConnection(dbURL, dbLogin, dbPassword)) {
@@ -501,6 +561,11 @@ public class DaoEtudiant extends DaoGenerator {
 		return idPromotion;
 	}
 
+	/**
+	 * obtenir le nom de la promotion en fonction de son id
+	 * @param idPromotion
+	 * @return nomPromotion
+	 */
 	public static String getNomPromotionFromIdPromotion(int idPromotion) {
 		String nomPromotion = "";
 		try (Connection con = DriverManager.getConnection(dbURL, dbLogin, dbPassword)) {
@@ -519,6 +584,11 @@ public class DaoEtudiant extends DaoGenerator {
 		return nomPromotion;
 	}
 
+	/**
+	 * obtenir l'annee d'obtention de diplôme de la promotion en fonction de son nom de promotion.
+	 * @param nomPromotion
+	 * @return
+	 */
 	public static int getAnneePromotionFromNomPromotion(String nomPromotion) {
 		int anneePromotion = 0;
 		try (Connection con = DriverManager.getConnection(dbURL, dbLogin, dbPassword)) {
@@ -537,6 +607,11 @@ public class DaoEtudiant extends DaoGenerator {
 		return anneePromotion;
 	}
 
+	/**
+	 * ajouter une matiere dans la base de données
+	 * @param matiere
+	 * @param nomPromotion
+	 */
 	public static void creerMatiere(MatiereBean matiere, String nomPromotion) {
 		int idPromotion = getIdPromotionFromNomPromotion(nomPromotion);
 		try (Connection con = DriverManager.getConnection(dbURL, dbLogin, dbPassword)) {
@@ -564,6 +639,11 @@ public class DaoEtudiant extends DaoGenerator {
 		}
 	}
 	
+	/**
+	 * permet de lier la matiere à la promotion après l'avoir ajoutée dans la base de données.
+	 * @param idMatiere
+	 * @param idPromotion
+	 */
 	public static void linkMatiereToPromotion(int idMatiere, int idPromotion) {
 		try (Connection con = DriverManager.getConnection(dbURL, dbLogin, dbPassword)) {
 			String insertQuery = "INSERT INTO Comprend ( idMatiere, idPromotion) VALUES (?, ?)";

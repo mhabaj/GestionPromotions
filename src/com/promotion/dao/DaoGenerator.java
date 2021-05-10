@@ -2,6 +2,11 @@ package com.promotion.dao;
 
 import javax.servlet.ServletContext;
 
+/**
+ * classe principale de dao permettant de spécifier les identifiants de connexion à la base de données, ces données sont spécifiées dans le web.xml.
+ * @author Sean
+ *
+ */
 public class DaoGenerator {
 	protected static String dbURL;
 	protected static String dbLogin;
